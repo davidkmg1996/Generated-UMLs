@@ -28,6 +28,9 @@ int main() {
 	Library lib;
 
 	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true, "Fiction");
+	Book b2 = Book("Lord of The Flies", "William Golding", "0399501487", true, "Fiction");
+	lib.addBook(b1);
+	lib.addBook(b2);
 
 	Member* m1;
 
@@ -36,6 +39,8 @@ int main() {
 	lib.RegisterMember(m1);
 
 	m1->borrowBook(b1);
+
+	lib.returnBook(b1);
 	
 
 

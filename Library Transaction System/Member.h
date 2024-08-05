@@ -6,7 +6,9 @@
 #include <algorithm>
 #include <random>
 #include <ctime>
+#include "Book.h"
 #include "Transaction.h"
+
 using namespace std;
 
 class Member {
@@ -14,7 +16,7 @@ class Member {
 public:
 
 	Member(string name, string address, int memberId, vector<Book> borrowedBooks) : name{ name }, 
-		address{ address }, borrowedBooks{ borrowedBooks }, memberId{ 0 } {
+		address{ address }, borrowedBooks{ borrowedBooks } {
 
 		this->memberId = generateId();
 		memberId = this->memberId;
@@ -47,12 +49,10 @@ public:
 	void borrowBook(Book aBook) {
 		borrowedBooks.push_back(aBook);
 		aBook.setAvailability(false);
-
 		Transaction nTrans(aBook.getType(), aBook);
-
 		nTrans.transactionReceipt(aBook);
-
 	}
+
 
 	void returnBook(Book rBook) {
 		borrowedBooks.erase(remove(borrowedBooks.begin(), borrowedBooks.end(), rBook));

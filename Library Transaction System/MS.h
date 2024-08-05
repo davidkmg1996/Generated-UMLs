@@ -3,14 +3,18 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Book.h"
 #include "Member.h"
+#include "Book.h"
+#include "Transaction.h"
+
 
 using namespace std;
 
 class Library{
 
 	friend class Transaction;
+	friend class Member;
+	friend class Book;
 
 	/*
 	* TAKE ME INTO LOVING ARMS
@@ -22,14 +26,16 @@ public:
 
 	Library() : memberId{ 0 }, name{ name }, address{ address }, books { books }, members{ members } {
 
+
 	}
 
-	void addBook(Book *aBook) {
-		books.push_back(*aBook);
+	void addBook(Book aBook) {
+		books.push_back(aBook);
 	}
 
-	void removeBook(Book *rBook) {
-		books.erase(remove(books.begin(), books.end(), *rBook));
+
+	void removeBook(Book rBook) {
+		books.erase(remove(books.begin(), books.end(), rBook));
 	}
 
 	void RegisterMember(Member *aMember) {
@@ -43,24 +49,31 @@ public:
 		aMember->getMemberInfo();
 	}
 
-	void issueBook(Member iMember, Book mBook) {
-		//iMember, do you member?
-		members.push_back(iMember);
-		books.erase(remove(books.begin(), books.end(), mBook));
-
-	}
 	void returnBook(Book rBook) {
-		books.erase(remove(books.begin(), books.end(), rBook));
+
+		removeBook(rBook);
+		cout << "Book Returned! Current titles checked out: " << endl;
+
+		
+		if (books.size() >= 1) {
+			for (auto e : books) {
+				cout << e.getTitle() << endl;
+			}
+		} else if (books.size() == 0) {
+			cout << "No books currently checked out.";
+		}
 	}
 
 
 private:
 	string name;
 	string address;
-	Member m;
 	vector<Book> books;
 	int memberId;
 	vector<Member> members;
+	Member m;
+
+		
 
 };
 

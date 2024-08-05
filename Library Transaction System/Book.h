@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+
 using namespace std;
 
 
@@ -13,7 +14,9 @@ public:
 
 	friend class Transaction;
 
-	Book(string title, string author, string isbn, bool available, string type) : title{ title }, author{ author }, isbn{ isbn }, available{ available }, type{ type } {}
+	Book(string title, string author, string isbn, bool available, string type) : title{ title }, author{ author }, isbn{ isbn }, available{ available }, type{ type } {
+	
+	}
 
 	string getTitle() const {
 		return title;
@@ -51,6 +54,8 @@ public:
 		return false;
 
 	}
+
+	
 	/*
 	* Overloaded equality operator needed to prevent compile - time
 	  binary equality error
