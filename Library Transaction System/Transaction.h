@@ -6,29 +6,23 @@
 #include <random>
 #include "Book.h"
 #include "Member.h"
+#include <ctime>
 
 using namespace std;
 
+
+/*
+* This class is dedicated to all of my ex girlfriends
+*/
 class Transaction {
+
+	friend class Member;
 
 public:
 	
 
-	Transaction(string date, string type, Member member, Book book, int transactionId) : date{ date }, type{ type }, member{ member }, book{ book }, transactionId{ transactionId } {
-
-	}
-	
-
-	/*
-	* The getMember() function is dedicated
-	* to all of my ex girlfriends . . .
-	*/
-	
-	Member getMember() const {
-
-		return member;
-	}
-	
+	Transaction(string type, Book book) : type{ type }, book{ book }, transactionId{ transactionId } {
+}
 	
 	/*
 	* . . . the getBook() function, however,
@@ -36,12 +30,6 @@ public:
 	*/
 	Book getBook() const {
 		return book;
-	}
-	/*
-	* Another S/O
-	*/
-	string getDate() const {
-		return date;
 	}
 
 	string getType() const {
@@ -57,20 +45,39 @@ public:
 	* I could probably keep going but I'm tired
 	* and it's not funny anymore
 	*/
-	int getTransactionId() const {
+	int getTransactionId() {
+
 		return transactionId;
 	}
 
-	int setTransactionId() {
+	void setTransactionId(int& id) {
+
+		srand(time(NULL));
+		id = (rand() % 9999) + 1;
+		transactionId = id;
+
+	}
+
+	void transactionReceipt(Book aBook) {
+
+		int tID{ 0 };
+		setTransactionId(tID);
+		char buffer[30];
+		time_t n = time(0);
+		ctime_s(buffer, sizeof buffer, &n);
+	
+		cout << "\n\nTransaction Complete!" << endl;
+		cout << "Tranaction ID: " << getTransactionId() << endl;
+		cout << "Book title: " << aBook.getTitle() << endl;
+		cout << "Book genre: " << aBook.getType() << endl;
+		cout << "Transaction Date: " << buffer << endl;
 
 
 	}
 
 private:
 	int transactionId;
-	Member member;
 	Book book;
-	string date;
 	string type;
 
 };

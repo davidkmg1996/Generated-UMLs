@@ -13,10 +13,14 @@ public:
 
 	friend class Transaction;
 
-	Book(string title, string author, string isbn, bool available) : title{ title }, author{ author }, isbn{ isbn }, available{ available } {}
+	Book(string title, string author, string isbn, bool available, string type) : title{ title }, author{ author }, isbn{ isbn }, available{ available }, type{ type } {}
 
 	string getTitle() const {
 		return title;
+	}
+
+	string getType() {
+		return type;
 	}
 
 	string getAuthor() const {
@@ -60,6 +64,7 @@ private:
 	string title;
 	string author;
 	string isbn;
+	string type;
 	bool available;
 
 };

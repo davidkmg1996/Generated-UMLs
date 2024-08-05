@@ -27,13 +27,15 @@ int main() {
 
 	Library lib;
 
-	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true);
+	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true, "Fiction");
 
 	Member* m1;
 
 	m1 = new Member("David", "Sesame Street", 999, bVector);
 
 	lib.RegisterMember(m1);
+
+	m1->borrowBook(b1);
 	
 
 

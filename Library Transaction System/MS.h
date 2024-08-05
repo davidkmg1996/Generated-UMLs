@@ -8,7 +8,9 @@
 
 using namespace std;
 
-class Library {
+class Library{
+
+	friend class Transaction;
 
 	/*
 	* TAKE ME INTO LOVING ARMS
@@ -36,7 +38,7 @@ public:
 		memberId = aMember->getMemberId();
 		members.push_back(*aMember);
 
-
+		
 		cout << "Member registered!\n" << endl;
 		aMember->getMemberInfo();
 	}
