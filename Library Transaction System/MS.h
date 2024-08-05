@@ -18,9 +18,7 @@ class Library {
 
 public:
 
-	Library(Member m, string name, string address) : memberId{ 0 }, name{ name }, address{ address }, books { books }, members{ members } {
-
-		this->m = m;
+	Library() : memberId{ 0 }, name{ name }, address{ address }, books { books }, members{ members } {
 
 	}
 
@@ -39,7 +37,7 @@ public:
 		members.push_back(*aMember);
 
 
-		cout << "Member registered!" << endl;
+		cout << "Member registered!\n" << endl;
 		aMember->getMemberInfo();
 	}
 

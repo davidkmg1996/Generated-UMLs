@@ -25,11 +25,15 @@ int main() {
 
 	vector<Book> bVector;
 
+	Library lib;
+
 	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true);
 
-	Member m1("David", "Sesame Street", 999, bVector);
+	Member* m1;
 
-	m1.getMemberInfo();
+	m1 = new Member("David", "Sesame Street", 999, bVector);
+
+	lib.RegisterMember(m1);
 	
 
 

@@ -11,18 +11,18 @@ using namespace std;
 
 class Transaction {
 
-	friend class Book;
-
 public:
-	/*
-	* The getMember() function is dedicated
-	* to all of my ex girlfriends . . .
-	*/
+	
 
 	Transaction(string date, string type, Member member, Book book, int transactionId) : date{ date }, type{ type }, member{ member }, book{ book }, transactionId{ transactionId } {
 
 	}
 	
+
+	/*
+	* The getMember() function is dedicated
+	* to all of my ex girlfriends . . .
+	*/
 	
 	Member getMember() const {
 
