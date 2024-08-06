@@ -12,10 +12,6 @@ using namespace std;
 
 class Library{
 
-	friend class Transaction;
-	friend class Member;
-	friend class Book;
-
 	/*
 	* TAKE ME INTO LOVING ARMS
 	* KISS ME UNDER THE LIGHT OF
@@ -24,18 +20,21 @@ class Library{
 
 public:
 
+
 	Library() : memberId{ 0 }, name{ name }, address{ address }, books { books }, members{ members } {
 
 
 	}
 
 	void addBook(Book aBook) {
+
 		books.push_back(aBook);
 	}
 
 
 	void removeBook(Book rBook) {
 		books.erase(remove(books.begin(), books.end(), rBook));
+
 	}
 
 	void RegisterMember(Member *aMember) {
@@ -49,17 +48,21 @@ public:
 		aMember->getMemberInfo();
 	}
 
-	void returnBook(Book rBook) {
-
-		removeBook(rBook);
-		cout << "Book Returned! Current titles checked out: " << endl;
+	void returnBook(Member m1, Book rBook) {
 
 		
-		if (books.size() >= 1) {
-			for (auto e : books) {
+		removeBook(rBook);
+	
+		cout << "Book Returned! Current titles checked out: " << endl;
+	
+		if (m1.borrowedBooks.size() > 0) {
+			for (auto e : m1.borrowedBooks) {
 				cout << e.getTitle() << endl;
 			}
-		} else if (books.size() == 0) {
+
+		}
+
+		if (m1.borrowedBooks.size() == 0) {
 			cout << "No books currently checked out.";
 		}
 	}

@@ -39,8 +39,10 @@ int main() {
 	lib.RegisterMember(m1);
 
 	m1->borrowBook(b1);
-
-	lib.returnBook(b1);
+	m1->borrowBook(b2);
+	m1->returnBook(b1);
+	
+	lib.returnBook(*m1, b1);
 	
 
 

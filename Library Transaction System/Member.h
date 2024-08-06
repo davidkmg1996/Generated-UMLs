@@ -13,7 +13,10 @@ using namespace std;
 
 class Member {
 
+	friend class Library;
+
 public:
+
 
 	Member(string name, string address, int memberId, vector<Book> borrowedBooks) : name{ name }, 
 		address{ address }, borrowedBooks{ borrowedBooks } {
