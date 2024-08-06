@@ -62,6 +62,7 @@ public:
 		cout << "\n\nTransaction Complete!" << endl;
 		cout << "Tranaction ID: " << getTransactionId() << endl;
 		cout << "Book title: " << aBook.getTitle() << endl;
+		cout << "Author " << aBook.getAuthor() << endl;
 		cout << "Book genre: " << aBook.getType() << endl;
 		cout << "Transaction Date: " << buffer << endl;
 
