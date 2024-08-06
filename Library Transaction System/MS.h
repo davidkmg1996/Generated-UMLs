@@ -50,10 +50,12 @@ public:
 
 	void returnBook(Member m1, Book rBook) {
 
+
+		string title = rBook.getTitle();
 		
 		removeBook(rBook);
 	
-		cout << "Book Returned! Current titles checked out: " << endl;
+		cout << title << " Returned!\n\nCurrent titles checked out : " << endl;
 	
 		if (m1.borrowedBooks.size() > 0) {
 			for (auto e : m1.borrowedBooks) {
