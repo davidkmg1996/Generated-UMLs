@@ -47,21 +47,15 @@ public:
 	*/
 	int getTransactionId() {
 
+		transactionId = (rand() % 9999) + 1;
+
 		return transactionId;
 	}
 
-	void setTransactionId(int& id) {
-
-		srand(time(NULL));
-		id = (rand() % 9999) + 1;
-		transactionId = id;
-
-	}
 
 	void transactionReceipt(Book aBook) {
 
-		int tID{ 0 };
-		setTransactionId(tID);
+		int tID{ (rand() % 9999) + 1 };
 		char buffer[30];
 		time_t n = time(0);
 		ctime_s(buffer, sizeof buffer, &n);
