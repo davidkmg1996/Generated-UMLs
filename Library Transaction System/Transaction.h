@@ -55,7 +55,6 @@ public:
 
 	void transactionReceipt(Book aBook) {
 
-		int tID{ (rand() % 9999) + 1 };
 		char buffer[30];
 		time_t n = time(0);
 		ctime_s(buffer, sizeof buffer, &n);
