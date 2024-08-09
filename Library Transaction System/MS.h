@@ -47,7 +47,7 @@ public:
 		const wstring m = aMember->getMemberInfo();
 		const wstring n = L"Member Registered\n\n";
 
-		return  m;
+		return  n;
 	}
 
 	string toString(string h){
