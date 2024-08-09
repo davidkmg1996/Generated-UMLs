@@ -18,7 +18,7 @@ class Member {
 public:
 
 
-	Member(string name, string address, int memberId, vector<Book> borrowedBooks) : name{ name }, 
+	Member(wstring name, wstring address, int memberId, vector<Book> borrowedBooks) : name{ name }, 
 		address{ address }, borrowedBooks{ borrowedBooks } {
 
 		this->memberId = generateId();
@@ -30,14 +30,15 @@ public:
 
 	}
 
-	void getMemberInfo() {
+	const wstring getMemberInfo()  {
 
-		cout << "Member Name: " << name << "\n";
-		cout << "Member Address: " << address << "\n";
-		cout << "Member Id: " << memberId << endl;
+		return L"Member Name: " + name + L"\n" +
+			L"Member Address: " + address + L"\n" +
+			L"Member ID: " + std::to_wstring(memberId) + L"\n";
 	}
 
-	string getName() const {
+	wstring getName() const {
+
 		return name;
 	}
 
@@ -45,7 +46,7 @@ public:
 		return memberId;
 	}
 
-	string getAddress() const {
+	wstring getAddress() const {
 		return address;
 	}
 
@@ -90,8 +91,8 @@ private:
 	* Cannot use unary address of operator and const explicitly
 	* deletes function, causes compile-time error
 	*/
-	string name;
-	string address;
+	wstring name;
+	wstring address;
 	int memberId;
 	vector<Book> borrowedBooks;
 

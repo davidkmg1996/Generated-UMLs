@@ -39,15 +39,20 @@ public:
 
 	}
 
-	void RegisterMember(Member *aMember) {
+	const wstring RegisterMember(Member *aMember) {
 		aMember->getName() = name;
 		aMember->getAddress() = address;
 		memberId = aMember->getMemberId();
 		members.push_back(*aMember);
+		const wstring m = aMember->getMemberInfo();
+		const wstring n = L"Member Registered\n\n";
 
-		
-		cout << "Member registered!\n" << endl;
-		aMember->getMemberInfo();
+		return  m;
+	}
+
+	string toString(string h){
+
+
 	}
 
 	void returnBook(Member m1, Book rBook) {
@@ -73,8 +78,8 @@ public:
 
 
 private:
-	string name;
-	string address;
+	wstring name;
+	wstring address;
 	vector<Book> books;
 	int memberId;
 	vector<Member> members;

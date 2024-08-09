@@ -28,39 +28,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
-
-	vector<Book> bVector;
-
-	Library lib;
-
-	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true, "Fiction");
-	Book b2 = Book("Lord of The Flies", "William Golding", "0399501487", true, "Fiction");
-	lib.addBook(b1);
-	lib.addBook(b2);
-
-	Member* m1;
-
-	m1 = new Member("David", "Sesame Street", 999, bVector);
-
-	lib.RegisterMember(m1);
-
-	m1->borrowBook(b1);
-	cout << b1.isAvailable();
-	m1->borrowBook(b2);
-	m1->returnBook(b1);
-
-	string h;
-	/*
-	* Once program ends window title defaults
-	* to debug, which is slightly annoying
-	*/
-	cin >> h;
-
-	
-	lib.returnBook(*m1, b1);
-
-
-
 	wchar_t LIB_NAME[500] = L"Library";
 
 	WNDCLASS winD = {};
@@ -83,9 +50,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		nullptr
 		);
 
-
-	
-
 	ShowWindowAsync(hwnd, nCmdShow);
 	UpdateWindow(hwnd); 
 
@@ -96,13 +60,34 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		DispatchMessage(&nMes);
 	}
 
-
-
 	return (int)nMes.wParam;
 }
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	vector<Book> bVector;
+
+	Library lib;
+
+	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true, "Fiction");
+	Book b2 = Book("Lord of The Flies", "William Golding", "0399501487", true, "Fiction");
+	lib.addBook(b1);
+	lib.addBook(b2);
+
+	Member* m1;
+
+	m1 = new Member(L"David", L"Sesame Street", 999, bVector);
+
+	lib.returnBook(*m1, b1);
+
+		PAINTSTRUCT paint;
+		HDC begin = BeginPaint(hwnd, &paint);
+
+		TextOut(begin, 10, 10, lib.RegisterMember(m1).c_str(), wcslen(lib.RegisterMember(m1).c_str()));
+
+		m1->borrowBook(b1);
+		cout << b1.isAvailable();
+		m1->borrowBook(b2);
+		m1->returnBook(b1);
 	
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
-	
-
 }
