@@ -1,4 +1,6 @@
-
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/Windows.Web.Syndication.h>
+#include <windows.h>
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -39,8 +41,10 @@ int main() {
 	lib.RegisterMember(m1);
 
 	m1->borrowBook(b1);
+	cout << b1.isAvailable();
 	m1->borrowBook(b2);
 	m1->returnBook(b1);
+
 	
 	lib.returnBook(*m1, b1);
 	
@@ -49,3 +53,4 @@ int main() {
 
 	return 0;
 }
+

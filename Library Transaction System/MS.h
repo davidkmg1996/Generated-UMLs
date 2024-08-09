@@ -12,6 +12,8 @@ using namespace std;
 
 class Library{
 
+	friend class Book;
+
 	/*
 	* TAKE ME INTO LOVING ARMS
 	* KISS ME UNDER THE LIGHT OF
@@ -56,7 +58,7 @@ public:
 		removeBook(rBook);
 	
 		cout << title << " Returned!\n\nCurrent titles checked out : " << endl;
-	
+		rBook.setAvailability(true);
 		if (m1.borrowedBooks.size() > 0) {
 			for (auto e : m1.borrowedBooks) {
 				cout << e.getTitle() << endl;

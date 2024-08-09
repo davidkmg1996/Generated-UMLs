@@ -37,19 +37,12 @@ public:
 	bool isAvailable() const {
 
 
-		if (available == true) {
-			return true;
-		}
-
-		return false;
+		return available;
 	}
 
 	bool setAvailability(bool tF) {
 
-		if (tF = true) {
-			available = true;
-			return true;
-		}
+	
 		available = false;
 		return false;
 
