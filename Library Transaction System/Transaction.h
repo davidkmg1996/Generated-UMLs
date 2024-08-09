@@ -35,8 +35,13 @@ public:
 	string getType() const {
 		/*
 		* Not to be confused with the return type of
-		* this function, which is, of course,
-		* std::retarded
+		* this function, which is, of course, std::string,
+  		* included in the user-defined class Transaction
+    		* accessed via the type member variable 
+      		* std::string type returned by the member function
+		* getType() const using the statement this->type
+		*
+  		*obviously
 		*/
 		return this->type;
 	}
