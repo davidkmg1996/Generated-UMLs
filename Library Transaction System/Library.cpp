@@ -22,6 +22,9 @@ using namespace std;
 * revelant so I wouldn't bother being nosey
 */
 
+HINSTANCE hInst;
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
@@ -55,9 +58,51 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	
 	lib.returnBook(*m1, b1);
+
+
+
+	wchar_t LIB_NAME[500] = L"Library";
+
+	WNDCLASS winD = {};
+	winD.lpfnWndProc = WindowProc;
+	winD.hInstance = hInstance;
+	winD.lpszClassName = LIB_NAME;
+	winD.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+	RegisterClass(&winD);
+
+	HWND hwnd = CreateWindowEx(
+		0,
+		LIB_NAME,
+		L"Library Transaction System",
+		WS_OVERLAPPEDWINDOW,
+		100, 100, 800, 600,
+		nullptr,
+		nullptr,
+		hInstance,
+		nullptr
+		);
+
+
 	
 
+	ShowWindowAsync(hwnd, nCmdShow);
+	UpdateWindow(hwnd); 
+
+	MSG nMes;
+
+	while (GetMessage(&nMes, nullptr, 0, 0)) {
+		TranslateMessage(&nMes);
+		DispatchMessage(&nMes);
+	}
 
 
-	return 0;
+
+	return (int)nMes.wParam;
+}
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	
+
 }
