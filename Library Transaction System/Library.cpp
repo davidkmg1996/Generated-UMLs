@@ -7,6 +7,7 @@
 #include "MS.h"
 #include "Book.h"
 #include "Member.h"
+#include "tchar.h"
 #include "Transaction.h"
 
 
@@ -22,9 +23,9 @@ using namespace std;
 */
 
 
-int main() {
+int main(_TCHAR* argv[]) {
 
-
+	SetConsoleTitle(_T("Library Transaction System"));
 	vector<Book> bVector;
 
 	Library lib;
@@ -44,6 +45,13 @@ int main() {
 	cout << b1.isAvailable();
 	m1->borrowBook(b2);
 	m1->returnBook(b1);
+
+	string h;
+	/*
+	* Once program ends window title defaults
+	* to debug, which is slightly annoying
+	*/
+	cin >> h;
 
 	
 	lib.returnBook(*m1, b1);
