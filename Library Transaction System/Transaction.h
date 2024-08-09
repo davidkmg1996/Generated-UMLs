@@ -39,8 +39,10 @@ public:
   		* included in the user-defined class Transaction
     		* and accessed via the type member variable 
       		* std::string type, returned by the member function
-		* getType() const using the statement this->type
-		*
+		* getType() const using the statement this->type,
+  		* shorthand for the less syntactically ambiguous
+		* (albeit more complex) statement (*this).type
+  		*
   		*obviously
 		*/
 		return this->type;
