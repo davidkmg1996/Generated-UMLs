@@ -88,6 +88,26 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		cout << b1.isAvailable();
 		m1->borrowBook(b2);
 		m1->returnBook(b1);
+
+		switch (uMsg) {
+		
+		/*
+		* If you're going to close the window,
+		* just close the window.
+		* kthx
+		*/
+		case WM_CLOSE: {
+
+			DestroyWindow(hwnd);
+			}
+		case WM_DESTROY: {
+
+			PostQuitMessage(0);
+
+			}
+		}
+
+
 	
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
