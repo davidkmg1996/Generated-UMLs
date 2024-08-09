@@ -23,9 +23,9 @@ using namespace std;
 */
 
 
-int main(_TCHAR* argv[]) {
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
-	SetConsoleTitle(_T("Library Transaction System"));
+
 	vector<Book> bVector;
 
 	Library lib;
@@ -61,4 +61,3 @@ int main(_TCHAR* argv[]) {
 
 	return 0;
 }
-
