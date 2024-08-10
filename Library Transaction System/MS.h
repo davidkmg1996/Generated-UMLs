@@ -5,6 +5,7 @@
 #include <vector>
 #include "Member.h"
 #include "Book.h"
+#include "tchar.h"
 #include "Transaction.h"
 
 
@@ -40,20 +41,23 @@ public:
 	}
 
 	const wstring RegisterMember(Member *aMember) {
-		aMember->getName() = name;
-		aMember->getAddress() = address;
-		memberId = aMember->getMemberId();
 		members.push_back(*aMember);
-		const wstring m = aMember->getMemberInfo();
-		const wstring n = L"Member Registered\n\n";
+		wstring info = L"Member Registered!\n\n";
+		info += L"Member Name: " + aMember->getName() + L"\n";
+		info += L"Member Address: " + aMember->getAddress() + *L"\n";
+		info += L"Member ID: " + to_wstring(aMember->getMemberId()) + *L"\n";
+		const wchar_t* n = L"Member Registered\r\n\n";
+		static wchar_t BUFFER[1000];
 
-		return  n;
+		wstring result = info;
+		
+		//wcsncat_s(BUFFER, sizeof(BUFFER) / sizeof(wchar_t), aMember->getName().c_str(), _TRUNCATE);
+
+		 
+		return result;
 	}
 
-	string toString(string h){
-
-
-	}
+	
 
 	void returnBook(Member m1, Book rBook) {
 

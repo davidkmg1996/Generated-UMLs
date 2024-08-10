@@ -9,6 +9,7 @@
 #include "Member.h"
 #include "tchar.h"
 #include "Transaction.h"
+#include "winAtts.h"
 #define NEW_BUTTON  2000
 
 
@@ -81,8 +82,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	lib.addBook(b2);
 
 	Member* m1;
+	Member* m2;
+
 
 	m1 = new Member(L"David", L"Sesame Street", 999, bVector);
+	m2 = new Member(L"Victoria", L"Beverly Hills", 90210, bVector);
 
 	lib.returnBook(*m1, b1);
 
@@ -123,8 +127,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				lib.RegisterMember(m1);
 				InvalidateRect(hwnd, NULL, TRUE);
 			}
-
 		}
+			
 
 		case WM_PAINT:	
 		{
@@ -134,11 +138,36 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 
 			
-			wstring result = lib.RegisterMember(m1);
-			TextOut(hdc, 320, 10, result.c_str(), result.length());
+		
+			/*
+			* TextOut(param1, param2, . . . , param5)  
+			* does not support carriage return
+			*/
 
+			RECT r;
+			
+		
+
+
+			
+			
+			PAINTSTRUCT newPaint;
+			GetClientRect(hwnd, &r);
+
+			RECT r1 = r;
+			RECT r2 = r;
+			GetClientRect(hwnd, &r2);
+			int y = r.bottom - r.top - 450;
+			r2.top += y;
+			SetTextColor(hdc, RGB(0, 0, 0));
+			SetBkMode(hdc, TRANSPARENT);
+			DrawText(hdc, lib.RegisterMember(m1).c_str(), -1, &r1, DT_WORDBREAK);
+			DrawText(hdc, lib.RegisterMember(m2).c_str(), -1, &r2, DT_WORDBREAK);
+		
 			EndPaint(hwnd, &paint);
 			break;
+			
+
 			
 		}
 		
@@ -160,3 +189,4 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
+

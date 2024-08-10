@@ -30,24 +30,27 @@ public:
 
 	}
 
-	const wstring getMemberInfo()  {
+	const wchar_t* getMemberInfo()  {
 
-		return L"Member Name: " + name + L"\n" +
+		wstring info =  L"Member Name: " + name + L"\n" +
 			L"Member Address: " + address + L"\n" +
-			L"Member ID: " + std::to_wstring(memberId) + L"\n";
+			L"Member ID: " + to_wstring(memberId) +  L"\n";
+
+		return info.c_str();
 	}
 
-	wstring getName() const {
+	const wstring getName() const {
 
-		return name;
+		return name.c_str();
 	}
 
 	int getMemberId() const {
+
 		return memberId;
 	}
 
-	wstring getAddress() const {
-		return address;
+	const wstring getAddress() const {
+		return address.c_str();
 	}
 
 	void borrowBook(Book aBook) {
