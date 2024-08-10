@@ -85,12 +85,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		PAINTSTRUCT paint;
 		HDC begin = BeginPaint(hwnd, &paint);
 
-		TextOut(begin, 320, 10, lib.RegisterMember(m1).c_str(), wcslen(lib.RegisterMember(m1).c_str()));
+		
 
 		m1->borrowBook(b1);
 		cout << b1.isAvailable();
 		m1->borrowBook(b2);
 		m1->returnBook(b1);
+
+		
 
 		switch (uMsg) {
 		
@@ -100,6 +102,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		* kthx
 		*/
 
+
+
 		case WM_CREATE:
 		{
 			HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
@@ -107,19 +111,48 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			break;
 
 		}
-		case WM_CLOSE: {
 
+		case WM_COMMAND:
+		{
+			if (LOWORD(wParam) == NEW_BUTTON) {
+				lib.RegisterMember(m1);
+				InvalidateRect(hwnd, NULL, TRUE);
+			}
+			
+		}
+
+		case WM_PAINT:	
+		{
+			PAINTSTRUCT p;
+			HDC hdc = BeginPaint(hwnd, &paint);
+
+			wstring result = lib.RegisterMember(m1);
+
+			TextOut(hdc, 320, 10, result.c_str(), result.length());
+
+			EndPaint(hwnd, &paint);
+			break;
+			
+		}
+		
+		
+		case WM_CLOSE:
+		{
 			DestroyWindow(hwnd);
 			break;
-			}
+		}
 
-		case 0x0002: {
+		case WM_DESTROY: {
 
 			PostQuitMessage(0);
 			break;
 
 			}
 		}
+
+		
+
+		
 
 
 	
