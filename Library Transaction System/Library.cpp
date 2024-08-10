@@ -39,6 +39,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	RegisterClass(&winD);
 
+	
+
 	HWND hwnd = CreateWindowEx(
 		0,
 		LIB_NAME,
@@ -50,6 +52,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hInstance,
 		nullptr
 		);
+
+	
 
 	ShowWindowAsync(hwnd, nCmdShow);
 	UpdateWindow(hwnd); 
@@ -85,14 +89,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		PAINTSTRUCT paint;
 		HDC begin = BeginPaint(hwnd, &paint);
 
+
 		
 
 		m1->borrowBook(b1);
 		cout << b1.isAvailable();
 		m1->borrowBook(b2);
 		m1->returnBook(b1);
-
-		
 
 		switch (uMsg) {
 		
@@ -101,13 +104,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		* just close the window.
 		* kthx
 		*/
-
-
+		
 
 		case WM_CREATE:
 		{
 			HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
+			
 			CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
+			HWND textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 175, 200, 400, 150, hwnd, 0, inst, 0);
+			
 			break;
 
 		}
@@ -118,16 +123,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				lib.RegisterMember(m1);
 				InvalidateRect(hwnd, NULL, TRUE);
 			}
-			
+
 		}
 
 		case WM_PAINT:	
 		{
 			PAINTSTRUCT p;
+		
 			HDC hdc = BeginPaint(hwnd, &paint);
 
-			wstring result = lib.RegisterMember(m1);
 
+			
+			wstring result = lib.RegisterMember(m1);
 			TextOut(hdc, 320, 10, result.c_str(), result.length());
 
 			EndPaint(hwnd, &paint);
@@ -149,11 +156,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 			}
 		}
-
-		
-
-		
-
 
 	
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
