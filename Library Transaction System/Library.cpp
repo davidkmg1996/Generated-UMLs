@@ -9,6 +9,7 @@
 #include "Member.h"
 #include "tchar.h"
 #include "Transaction.h"
+#define NEW_BUTTON  2000
 
 
 using namespace std;
@@ -66,6 +67,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	vector<Book> bVector;
 
+	BS_PUSHBUTTON();
+
 	Library lib;
 
 	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true, "Fiction");
@@ -82,7 +85,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		PAINTSTRUCT paint;
 		HDC begin = BeginPaint(hwnd, &paint);
 
-		TextOut(begin, 10, 10, lib.RegisterMember(m1).c_str(), wcslen(lib.RegisterMember(m1).c_str()));
+		TextOut(begin, 320, 10, lib.RegisterMember(m1).c_str(), wcslen(lib.RegisterMember(m1).c_str()));
 
 		m1->borrowBook(b1);
 		cout << b1.isAvailable();
@@ -96,6 +99,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		* just close the window.
 		* kthx
 		*/
+
+		case WM_CREATE:
+		{
+			HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
+			CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
+			break;
+
+		}
 		case WM_CLOSE: {
 
 			DestroyWindow(hwnd);
