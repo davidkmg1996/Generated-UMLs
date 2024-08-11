@@ -7,6 +7,6 @@ Each project should be based on the UML given for each prompt, but should not be
 to match the diagram exactly.
 
 # Purpose
-Expand exposure to unfamiliar APIs and spread awareness of ethical
+Expand exposure to unfamiliar APIs and provide examples of ethical
 generative AI modeling techniques
 
