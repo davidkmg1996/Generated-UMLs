@@ -6,3 +6,7 @@ Programming (By hand) &amp;&amp; UML Modeling (By hand) random GPT-4o UML practi
 Each project should be based on the UML given for each prompt, but should not be expected
 to match the diagram exactly.
 
+# Purpose
+Expand exposure to unfamiliar APIs and spread awareness of ethical
+generative AI modeding techniques 
+
