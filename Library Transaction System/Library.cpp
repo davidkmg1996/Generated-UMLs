@@ -13,6 +13,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "tchar.h"
 #include "Transaction.h"
 #include "winAtts.h"
+#include <commctrl.h>
 #define NEW_BUTTON  2000
 
 
@@ -126,7 +127,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
 			
 			CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
-			HWND textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 350, 250, 40, hwnd, 0, inst, 0);
+			HWND textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 370, 250, 20, hwnd, 0, inst, 0);
+			wchar_t placeholder[] = L"Please enter a member to register ";
+			Edit_SetCueBannerText(textEdit, placeholder);
+			
 			
 			break;
 
