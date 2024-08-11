@@ -8,5 +8,5 @@ to match the diagram exactly.
 
 # Purpose
 Expand exposure to unfamiliar APIs and spread awareness of ethical
-generative AI modeding techniques 
+generative AI modeling techniques
 
