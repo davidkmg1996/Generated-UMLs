@@ -6,5 +6,3 @@ Programming (By hand) &amp;&amp; UML Modeling (By hand) random GPT-4o UML practi
 Each project should be based on the UML given for each prompt, but should not be expected
 to match the diagram exactly.
 
-Purpose:
-Increase versatility by expanding exposure to unfamiliiar APIs and lesser used languages
