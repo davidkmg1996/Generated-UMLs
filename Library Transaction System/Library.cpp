@@ -36,6 +36,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	winD.lpfnWndProc = WindowProc;
 	winD.hInstance = hInstance;
 	winD.lpszClassName = LIB_NAME;
+	//Prevent black bars/ghosting
+	winD.hbrBackground = (HBRUSH)(COLOR_WINDOW)	;
 	winD.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
 	RegisterClass(&winD);
@@ -53,6 +55,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hInstance,
 		nullptr
 		);
+
+	
+	PAINTSTRUCT q;
+	
+
 
 	
 
@@ -116,10 +123,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			
 			CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
 			HWND textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 175, 200, 400, 150, hwnd, 0, inst, 0);
+
+			
+
 			
 			break;
 
 		}
+
+	
+
 
 		case WM_COMMAND:
 		{
@@ -136,6 +149,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		
 			HDC hdc = BeginPaint(hwnd, &paint);
 
+			
+			
 
 			
 		
