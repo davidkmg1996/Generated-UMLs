@@ -23,7 +23,7 @@ using namespace std;
 /*
 * Based off of UML suggestion with
 * screenshots provided.
-* 
+*
 * All relevant documentation included
 * in MS header file, though none of it is
 * revelant so I wouldn't bother being nosey
@@ -42,12 +42,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	winD.hInstance = hInstance;
 	winD.lpszClassName = LIB_NAME;
 	//Prevent black bars/ghosting
-	winD.hbrBackground = (HBRUSH)(COLOR_WINDOW)	;
+	winD.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 	winD.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
 	RegisterClass(&winD);
 
-	
+
 
 	HWND hwnd = CreateWindowEx(
 		0,
@@ -59,14 +59,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		nullptr,
 		hInstance,
 		nullptr
-		);
+	);
 
-	
+
 	PAINTSTRUCT q;
-	
+
 
 	ShowWindowAsync(hwnd, nCmdShow);
-	UpdateWindow(hwnd); 
+	UpdateWindow(hwnd);
 
 	MSG nMes;
 
@@ -80,6 +80,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	vector<Book> bVector;
+	
+	static wstring out;
 
 	BS_PUSHBUTTON();
 
@@ -90,117 +92,111 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	lib.addBook(b1);
 	lib.addBook(b2);
 
-	Member* m1;
 	Member* m2;
 
 
-	m1 = new Member(L"David", L"Sesame Street", 999, bVector);
+	
 	m2 = new Member(L"Victoria", L"Beverly Hills", 90210, bVector);
 
-	lib.returnBook(*m1, b1);
+	
 
-		PAINTSTRUCT paint;
-		HDC begin = BeginPaint(hwnd, &paint);
+	PAINTSTRUCT paint;
 
-		HWND textEdit;
+	static HWND textEdit;
+	static HWND getAddress;
+
+
+
+	switch (uMsg) {
+
 		
 
-		m1->borrowBook(b1);
-		cout << b1.isAvailable();
-		m1->borrowBook(b2);
-		m1->returnBook(b1);
 
-		switch (uMsg) {
-		
+	case WM_CREATE:
+	{
+		HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
+
+		CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
+		textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 335, 250, 20, hwnd, 0, inst, 0);
+		getAddress = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 370, 250, 20, hwnd, 0, inst, 0);
+		wchar_t placeholder[] = L"Enter a member name";
+		wchar_t pAddress[] = L"Please enter an address";
+		Edit_SetCueBannerText(textEdit, placeholder);
+		Edit_SetCueBannerText(getAddress, pAddress);
+
+
+		break;
+
+	}
+
+
+
+
+	case WM_COMMAND:
+	{
+		if (LOWORD(wParam) == NEW_BUTTON) {
+			wchar_t tText[300];
+			wchar_t tAddress[300];
+			GetWindowText(textEdit, tText, 300);
+			GetWindowText(getAddress, tAddress, 300);
+			Member* m1 = new Member(tText, tAddress, 999, bVector);
+			out = lib.RegisterMember(m1);
+			InvalidateRect(hwnd, NULL, true);
+		}
+		break;
+	}
+
+
+	case WM_PAINT:
+	{
+		PAINTSTRUCT p;
+
+		HDC hdc = BeginPaint(hwnd, &p);
+
+
 		/*
+		* TextOut(param1, param2, . . . , param5)
+		* does not support carriage return
+		*/
+
+		RECT r;
+
+	
+		GetClientRect(hwnd, &r);
+		SetTextColor(hdc, RGB(0, 0, 0));
+		SetBkMode(hdc, TRANSPARENT);
+
+		DrawText(hdc, out.c_str(), -1, &r, DT_WORDBREAK);
+		
+
+
+		EndPaint(hwnd, &paint);
+		break;
+
+
+
+	}
+
+	/*
 		* If you're going to close the window,
 		* just close the window.
 		* kthx
 		*/
-		
 
-		case WM_CREATE:
-		{
-			HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
-			
-			CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
-			textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 370, 250, 20, hwnd, 0, inst, 0);
-			wchar_t placeholder[] = L"Please enter a member to register ";
-			Edit_SetCueBannerText(textEdit, placeholder);
-			
-			
-			break;
+	case WM_CLOSE:
+	{
+		DestroyWindow(hwnd);
+		break;
+	}
 
-		}
+	case WM_DESTROY: {
 
-	
+		PostQuitMessage(0);
+		break;
+
+	}
+	}
 
 
-		case WM_COMMAND:
-		{
-			if (LOWORD(wParam) == NEW_BUTTON) {
-				lib.RegisterMember(m1);
-				InvalidateRect(hwnd, NULL, TRUE);
-			}
-		}
-			
-
-		case WM_PAINT:	
-		{
-			PAINTSTRUCT p;
-		
-			HDC hdc = BeginPaint(hwnd, &paint);
-
-		
-			/*
-			* TextOut(param1, param2, . . . , param5)  
-			* does not support carriage return
-			*/
-
-			RECT r;
-			
-			
-			PAINTSTRUCT newPaint;
-			GetClientRect(hwnd, &r);
-
-			RECT r1 = r;
-			RECT r2 = r;
-			GetClientRect(hwnd, &r2);
-			int y = r.bottom - r.top - 450;
-			r2.top += y;
-			SetTextColor(hdc, RGB(0, 0, 0));
-			SetBkMode(hdc, TRANSPARENT);
-			DrawText(hdc, lib.RegisterMember(m1).c_str(), -1, &r1, DT_WORDBREAK);
-			DrawText(hdc, lib.RegisterMember(m2).c_str(), -1, &r2, DT_WORDBREAK);
-
-			ofstream outFile("registeredMembers.txt");
-			wstring oT(lib.RegisterMember(m1));
-			string outText(oT.begin(), oT.end());
-			outFile << outText;
-		
-			EndPaint(hwnd, &paint);
-			break;
-			
-
-			
-		}
-		
-		
-		case WM_CLOSE:
-		{
-			DestroyWindow(hwnd);
-			break;
-		}
-
-		case WM_DESTROY: {
-
-			PostQuitMessage(0);
-			break;
-
-			}
-		}
-
-	
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
-
