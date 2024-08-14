@@ -14,6 +14,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "Transaction.h"
 #include "winAtts.h"
 #include <commctrl.h>
+#include <fstream>
 #define NEW_BUTTON  2000
 
 
@@ -62,10 +63,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	
 	PAINTSTRUCT q;
-
-	
-
-
 	
 
 	ShowWindowAsync(hwnd, nCmdShow);
@@ -105,7 +102,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		PAINTSTRUCT paint;
 		HDC begin = BeginPaint(hwnd, &paint);
 
-
+		HWND textEdit;
 		
 
 		m1->borrowBook(b1);
@@ -127,7 +124,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
 			
 			CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
-			HWND textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 370, 250, 20, hwnd, 0, inst, 0);
+			textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 370, 250, 20, hwnd, 0, inst, 0);
 			wchar_t placeholder[] = L"Please enter a member to register ";
 			Edit_SetCueBannerText(textEdit, placeholder);
 			
@@ -154,10 +151,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		
 			HDC hdc = BeginPaint(hwnd, &paint);
 
-			
-			
-
-			
 		
 			/*
 			* TextOut(param1, param2, . . . , param5)  
@@ -165,10 +158,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			*/
 
 			RECT r;
-			
-		
-
-
 			
 			
 			PAINTSTRUCT newPaint;
@@ -183,6 +172,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			SetBkMode(hdc, TRANSPARENT);
 			DrawText(hdc, lib.RegisterMember(m1).c_str(), -1, &r1, DT_WORDBREAK);
 			DrawText(hdc, lib.RegisterMember(m2).c_str(), -1, &r2, DT_WORDBREAK);
+
+			ofstream outFile("registeredMembers.txt");
+			wstring oT(lib.RegisterMember(m1));
+			string outText(oT.begin(), oT.end());
+			outFile << outText;
 		
 			EndPaint(hwnd, &paint);
 			break;
