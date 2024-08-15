@@ -16,6 +16,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <commctrl.h>
 #include <fstream>
 #define NEW_BUTTON  2000
+#define QUIT 1000
 
 
 using namespace std;
@@ -62,11 +63,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	);
 
 
-	PAINTSTRUCT q;
-
 
 	ShowWindowAsync(hwnd, nCmdShow);
 	UpdateWindow(hwnd);
+
+
+	//Use CreateMenu() for menuBar
+	
 
 	MSG nMes;
 
@@ -98,9 +101,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	
 	m2 = new Member(L"Victoria", L"Beverly Hills", 90210, bVector);
 
-	
 
-	PAINTSTRUCT paint;
 
 	static HWND textEdit;
 	static HWND getAddress;
@@ -124,6 +125,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		Edit_SetCueBannerText(textEdit, placeholder);
 		Edit_SetCueBannerText(getAddress, pAddress);
 
+		HMENU menuBar = CreateMenu();
+		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)menuBar, L"File");
+		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)menuBar, L"About");
+		AppendMenu(menuBar, MF_STRING, QUIT, L"Quit");
+		SetMenu(hwnd, menuBar);
+
 
 		break;
 
@@ -142,6 +149,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			Member* m1 = new Member(tText, tAddress, 999, bVector);
 			out = lib.RegisterMember(m1);
 			InvalidateRect(hwnd, NULL, true);
+		}
+
+		if (LOWORD(wParam) == QUIT) {
+			DestroyWindow(hwnd);
 		}
 		break;
 	}
@@ -170,7 +181,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		
 
 
-		EndPaint(hwnd, &paint);
+		EndPaint(hwnd, &p);
 		break;
 
 
