@@ -153,6 +153,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 		if (LOWORD(wParam) == QUIT) {
 			DestroyWindow(hwnd);
+			PostQuitMessage(0);
 		}
 		break;
 	}
@@ -179,12 +180,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 		DrawText(hdc, out.c_str(), -1, &r, DT_WORDBREAK);
 		
-
-
 		EndPaint(hwnd, &p);
 		break;
-
-
 
 	}
 
