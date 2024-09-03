@@ -1,20 +1,6 @@
-#include <winrt/Windows.Foundation.Collections.h>
-#include <winrt/Windows.Web.Syndication.h>
-#include <windows.h>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include "MS.h"
-#include "Book.h"
-#include "Member.h"
-#include "tchar.h"
-#include "Transaction.h"
-
 #define NEW_BUTTON  2000
 #define QUIT 1000
 bool bEmpty = false;
-
-using namespace std;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL);
@@ -62,7 +48,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)menuBar, L"About");
 		AppendMenu(menuBar, MF_STRING, QUIT, L"Quit");
 		SetMenu(hwnd, menuBar);
-
 
 		break;
 
@@ -136,7 +121,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				InvalidateRect(hwnd, NULL, true);
 
 			}
-
 			
 		}
 
@@ -149,13 +133,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 
 	case WM_PAINT:
-	{
 
+	{
 
 		PAINTSTRUCT p;
 
 		HDC hdc = BeginPaint(hwnd, &p);
-
 
 		/*
 		* TextOut(param1, param2, . . . , param5)
@@ -165,7 +148,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		*/
 
 		RECT r;
-
 
 		GetClientRect(hwnd, &r);
 		SetTextColor(hdc, RGB(0, 0, 0));
@@ -178,7 +160,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	}
 
-	/*
+		/*
 		* If you're going to close the window,
 		* just close the window.
 		* kthx
