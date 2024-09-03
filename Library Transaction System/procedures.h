@@ -67,8 +67,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 			GetWindowText(getAddress, tAddress, 300);
 
-
-
 			if (!iswalpha(tText[0])) {
 
 				bEmpty = true;
