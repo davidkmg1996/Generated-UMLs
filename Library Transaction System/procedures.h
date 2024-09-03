@@ -117,22 +117,27 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				UpdateWindow(eMenu);
 
 			}
+			else {
 
-			Member* m1 = new Member(tText, tAddress, 999, bVector);
-			out = lib.RegisterMember(m1);
+				Member* m1 = new Member(tText, tAddress, 999, bVector);
+				out = lib.RegisterMember(m1);
 
-			ofstream nstream("users.txt", std::ios::app);
+				ofstream nstream("users.txt", std::ios::app);
 
-			wstring sName = m1->getName();
-			int sId = m1->getMemberId();
+				wstring sName = m1->getName();
+				int sId = m1->getMemberId();
 
-			string sInfoN(sName.begin(), sName.end());
+				string sInfoN(sName.begin(), sName.end());
 
-			nstream << sInfoN << endl;
-			nstream << sId << endl;
+				nstream << sInfoN << endl;
+				nstream << sId << endl;
 
 
-			InvalidateRect(hwnd, NULL, true);
+				InvalidateRect(hwnd, NULL, true);
+
+			}
+
+			
 		}
 
 		if (LOWORD(wParam) == QUIT) {
@@ -197,20 +202,31 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-LRESULT CALLBACK nProc(HWND hwnd, UINT eMsg, WPARAM eParam, LPARAM eparam) {
+LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eparam) {
+
+	PAINTSTRUCT e;
+
+	HDC edc;
+	
+	RECT eR;
 
 	switch (eMsg) {
-	case WM_CLOSE:
-		DestroyWindow(hwnd);
+
+	case WM_PAINT:
+		edc = BeginPaint(nwnd, &e);
+		SetTextColor(edc, RGB(0, 0, 0));
+		SetBkMode(edc, TRANSPARENT);
+		GetClientRect(nwnd, &eR);
+		DrawText(edc, L"Member Name must contain only alphabetic characters", -1, &eR, DT_WORDBREAK);
+		EndPaint(nwnd, &e);
 		break;
 
-	case WM_DESTROY:
-		PostQuitMessage(0);
+	case WM_CLOSE:
+		DestroyWindow(nwnd);
 		break;
+
 	}
 
-
-
-	return DefWindowProc(hwnd, eMsg, eParam, eparam);
+	return DefWindowProc(nwnd, eMsg, eParam, eparam);
 
 }
