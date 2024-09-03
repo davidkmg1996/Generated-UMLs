@@ -148,6 +148,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			GetWindowText(getAddress, tAddress, 300);
 			Member* m1 = new Member(tText, tAddress, 999, bVector);
 			out = lib.RegisterMember(m1);
+
+			ofstream nstream("users.txt", std::ios::app);
+
+			wstring sName = m1->getName();
+			int sId = m1->getMemberId();
+
+			string sInfoN(sName.begin(), sName.end());
+
+			nstream << "Name of Member: " << sInfoN << endl;
+			nstream << "Member ID: " << sId << endl;
+
+
 			InvalidateRect(hwnd, NULL, true);
 		}
 
