@@ -1,6 +1,6 @@
 #define NEW_BUTTON  2000
 #define QUIT 1000
-bool bEmpty = false;
+bool bEmpty;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL);
@@ -67,7 +67,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 			GetWindowText(getAddress, tAddress, 300);
 
-			if (!iswalpha(tText[0])) {
+			//Use null character
+			for (int i = 0; tText[i] != '\0'; i++) {
+
+				if (!iswalpha(tText[i])) {
 
 				bEmpty = true;
 
@@ -98,28 +101,32 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 				ShowWindow(eMenu, errShow);
 				UpdateWindow(eMenu);
+				break;
+
+				}
+				else {
+					bEmpty = false;
+					Member* m1 = new Member(tText, tAddress, 999, bVector);
+					out = lib.RegisterMember(m1);
+
+					ofstream nstream("users.txt", std::ios::app);
+
+					wstring sName = m1->getName();
+					int sId = m1->getMemberId();
+
+					string sInfoN(sName.begin(), sName.end());
+
+					nstream << sInfoN << endl;
+					nstream << sId << endl;
+
+
+					InvalidateRect(hwnd, NULL, true);
+
+				}
 
 			}
-			else {
+		
 
-				Member* m1 = new Member(tText, tAddress, 999, bVector);
-				out = lib.RegisterMember(m1);
-
-				ofstream nstream("users.txt", std::ios::app);
-
-				wstring sName = m1->getName();
-				int sId = m1->getMemberId();
-
-				string sInfoN(sName.begin(), sName.end());
-
-				nstream << sInfoN << endl;
-				nstream << sId << endl;
-
-
-				InvalidateRect(hwnd, NULL, true);
-
-			}
-			
 		}
 
 		if (LOWORD(wParam) == QUIT) {
@@ -133,36 +140,40 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	case WM_PAINT:
 
 	{
-
 		PAINTSTRUCT p;
 
-		HDC hdc = BeginPaint(hwnd, &p);
+			HDC hdc = BeginPaint(hwnd, &p);
 
-		/*
-		* TextOut(param1, param2, . . . , param5)
-		* does not support carriage return
-		*
-		* and neither do I
-		*/
+			/*
+			* TextOut(param1, param2, . . . , param5)
+			* does not support carriage return
+			*
+			* and neither do I
+			*/
 
-		RECT r;
+			RECT r;
 
-		GetClientRect(hwnd, &r);
-		SetTextColor(hdc, RGB(0, 0, 0));
-		SetBkMode(hdc, TRANSPARENT);
+			GetClientRect(hwnd, &r);
+			SetTextColor(hdc, RGB(0, 0, 0));
+			SetBkMode(hdc, TRANSPARENT);
 
-		DrawText(hdc, out.c_str(), -1, &r, DT_WORDBREAK);
+			if (bEmpty == false) {
+				DrawText(hdc, out.c_str(), -1, &r, DT_WORDBREAK);
+			}
+		
 
-		EndPaint(hwnd, &p);
-		break;
+			EndPaint(hwnd, &p);
+			break;
+
+
 
 	}
 
-		/*
-		* If you're going to close the window,
-		* just close the window.
-		* kthx
-		*/
+	/*
+	* If you're going to close the window,
+	* just close the window.
+	* kthx
+	*/
 
 	case WM_CLOSE:
 	{
@@ -187,7 +198,7 @@ LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 	PAINTSTRUCT e;
 
 	HDC edc;
-	
+
 	RECT eR;
 
 	switch (eMsg) {
