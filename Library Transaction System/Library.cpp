@@ -10,6 +10,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <commctrl.h>
 #include <fstream>
 #include <array>
+#include "sqlite3.h"
 #include "MS.h"
 #include "Book.h"
 #include "Member.h"
@@ -44,8 +45,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	RegisterClass(&winD);
 
-
-
 	HWND hwnd = CreateWindowEx(
 		0,
 		LIB_NAME,
@@ -71,6 +70,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		TranslateMessage(&nMes);
 		DispatchMessage(&nMes);
 	}
+
+
 
 	return (int)nMes.wParam;
 }
