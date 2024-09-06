@@ -9,8 +9,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	vector<Book> bVector;
 
-
-
 	static wstring out;
 
 	BS_PUSHBUTTON();
@@ -29,9 +27,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	static HWND textEdit;
 	static HWND getAddress;
 
-
 	switch (uMsg) {
-
 
 	case WM_CREATE:
 	{
@@ -62,7 +58,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		sqlite3* db;
 		int getDb;
 
-		getDb = sqlite3_open("users.db", &db);
+		getDb = sqlite3_open("users", &db);
 
 		string name;
 		int errShow = SW_SHOWNORMAL;
@@ -116,10 +112,23 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 					Member* m1 = new Member(tText, tAddress, 999, bVector);
 					out = lib.RegisterMember(m1);
 
+
 					ofstream nstream("users.txt", std::ios::app);
 
 					wstring sName = m1->getName();
 					int sId = m1->getMemberId();
+
+					
+
+					const char* createTable = "CREATE TABLE users(userName varchar(255), address varchar(255));";
+
+					const char* sqlStatement = "INSERT INTO users(userName, address) VALUES ('david', 'abc');";
+
+					getDb = sqlite3_exec(db, createTable, 0, 0, 0);
+					getDb = sqlite3_exec(db, sqlStatement, 0, 0, 0);
+
+					
+
 
 					string sInfoN(sName.begin(), sName.end());
 
