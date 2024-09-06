@@ -15,8 +15,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	Library lib;
 
-	Book b1 = Book("A Farewell to Arms", "Ernest Hemingway", "1451658168", true, "Fiction");
-	Book b2 = Book("Lord of The Flies", "William Golding", "0399501487", true, "Fiction");
+	Book b1 = Book(L"A Farewell to Arms", L"Ernest Hemingway", L"1451658168", true, L"Fiction");
+	Book b2 = Book(L"Lord of The Flies", L"William Golding", L"0399501487", true, L"Fiction");
 	lib.addBook(b1);
 	lib.addBook(b2);
 

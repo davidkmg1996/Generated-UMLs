@@ -21,7 +21,7 @@ class Transaction {
 public:
 	
 
-	Transaction(string type, Book book) : type{ type }, book{ book }, transactionId{ transactionId } {
+	Transaction(wstring type, Book book) : type{ type }, book{ book }, transactionId{ transactionId } {
 }
 	
 	/*
@@ -32,7 +32,7 @@ public:
 		return book;
 	}
 
-	string getType() const {
+	const wstring getType() const {
 		/*
 		* Not to be confused with the return type of
 		* this function, which is, of course, std::string,
@@ -66,12 +66,16 @@ public:
 		char buffer[30];
 		time_t n = time(0);
 		ctime_s(buffer, sizeof buffer, &n);
+
+		string title(aBook.getTitle().begin(), aBook.getTitle().end());
+		string author(aBook.getAuthor().begin(), aBook.getAuthor().end());
+		string type(aBook.getType().begin(), aBook.getType().end());
 	
 		cout << "\n\nTransaction Complete!" << endl;
 		cout << "Tranaction ID: " << getTransactionId() << endl;
-		cout << "Book title: " << aBook.getTitle() << endl;
-		cout << "Author " << aBook.getAuthor() << endl;
-		cout << "Book genre: " << aBook.getType() << endl;
+		cout << "Book title: " << title << endl;
+		cout << "Author " << author << endl;
+		cout << "Book genre: " << type << endl;
 		cout << "Transaction Date: " << buffer << endl;
 
 
@@ -80,7 +84,7 @@ public:
 private:
 	int transactionId;
 	Book book;
-	string type;
+	wstring type;
 
 };
 #endif

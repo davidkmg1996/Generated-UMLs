@@ -23,7 +23,6 @@ class Library{
 
 public:
 
-
 	Library() : memberId{ 0 }, name{ name }, address{ address }, books { books }, members{ members } {
 
 
@@ -53,16 +52,12 @@ public:
 		
 		//wcsncat_s(BUFFER, sizeof(BUFFER) / sizeof(wchar_t), aMember->getName().c_str(), _TRUNCATE);
 
-		 
 		return result;
 	}
 
-	
-
 	void returnBook(Member m1, Book rBook) {
 
-
-		string title = rBook.getTitle();
+		string title(rBook.getTitle().begin(), rBook.getTitle().end());
 		
 		removeBook(rBook);
 	
@@ -70,7 +65,7 @@ public:
 		rBook.setAvailability(true);
 		if (m1.borrowedBooks.size() > 0) {
 			for (auto e : m1.borrowedBooks) {
-				cout << e.getTitle() << endl;
+				wcout << e.getTitle().c_str() << endl;
 			}
 
 		}
@@ -80,16 +75,14 @@ public:
 		}
 	}
 
-
 private:
+
 	wstring name;
 	wstring address;
 	vector<Book> books;
 	int memberId;
 	vector<Member> members;
 	Member m;
-
-		
 
 };
 

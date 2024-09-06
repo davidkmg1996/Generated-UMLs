@@ -39,6 +39,10 @@ public:
 		return info.c_str();
 	}
 
+	void setName(wstring n) {
+		name = n;
+	}
+
 	const wstring getName() const {
 
 		return name.c_str();
@@ -54,6 +58,8 @@ public:
 	}
 
 	void borrowBook(Book aBook) {
+
+
 		borrowedBooks.push_back(aBook);
 		aBook.setAvailability(false);
 		Transaction nTrans(aBook.getType(), aBook);
@@ -69,7 +75,7 @@ public:
 	void getBorrowedBooks() {
 
 		for (int i = 0; i < borrowedBooks.size(); i++) {
-			cout << borrowedBooks.at(i).getTitle();
+			wcout << borrowedBooks.at(i).getTitle();
 		}
 	}
 
