@@ -51,7 +51,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	}
 
-
 	case WM_COMMAND:
 	{
 
@@ -61,6 +60,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		getDb = sqlite3_open("users", &db);
 
 		string name;
+		string address;
+		int sId;
+		sqlite3_stmt* n;
 		int errShow = SW_SHOWNORMAL;
 
 		if (LOWORD(wParam) == NEW_BUTTON) {
@@ -112,24 +114,19 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 					Member* m1 = new Member(tText, tAddress, 999, bVector);
 					out = lib.RegisterMember(m1);
 
-
 					ofstream nstream("users.txt", std::ios::app);
 
 					wstring sName = m1->getName();
-					int sId = m1->getMemberId();
+					string name2(sName.begin(), sName.end());
+					name = name2;
 
+					wstring sAddress = m1->getAddress();
+					string address2(sAddress.begin(), sAddress.end());
+					address = address2;
+
+
+					sId = m1->getMemberId();
 					
-
-					const char* createTable = "CREATE TABLE users(userName varchar(255), address varchar(255));";
-
-					const char* sqlStatement = "INSERT INTO users(userName, address) VALUES ('david', 'abc');";
-
-					getDb = sqlite3_exec(db, createTable, 0, 0, 0);
-					getDb = sqlite3_exec(db, sqlStatement, 0, 0, 0);
-
-					
-
-
 					string sInfoN(sName.begin(), sName.end());
 
 					nstream << sInfoN << endl;
@@ -141,7 +138,24 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				}
 
 			}
-		
+
+			
+
+
+			const char* createTable = "CREATE TABLE users(userName varchar(255), address varchar(255), memberId int);";
+			getDb = sqlite3_exec(db, createTable, 0, 0, 0);
+
+			const char* sqlStatement = "INSERT INTO users(userName, address, memberId) VALUES (?, ?, ?);";
+
+			getDb = sqlite3_prepare_v2(db, sqlStatement, -1, &n, 0);
+
+			sqlite3_bind_text(n, 1, name.c_str(), name.length(), SQLITE_STATIC);
+			sqlite3_bind_text(n, 2, address.c_str(), address.length(), SQLITE_STATIC);
+			sqlite3_bind_int(n, 3, sId);
+
+			getDb = sqlite3_step(n);
+
+			sqlite3_finalize(n);
 
 		}
 
