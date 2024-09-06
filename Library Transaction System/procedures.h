@@ -9,6 +9,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	vector<Book> bVector;
 
+
+
 	static wstring out;
 
 	BS_PUSHBUTTON();
@@ -56,6 +58,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	case WM_COMMAND:
 	{
+
+		sqlite3* db;
+		int getDb;
+
+		getDb = sqlite3_open("users.db", &db);
 
 		string name;
 		int errShow = SW_SHOWNORMAL;
