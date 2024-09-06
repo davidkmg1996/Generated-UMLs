@@ -14,24 +14,24 @@ public:
 
 	friend class Transaction;
 
-	Book(string title, string author, string isbn, bool available, string type) : title{ title }, author{ author }, isbn{ isbn }, available{ available }, type{ type } {
+	Book(wstring title, wstring author, wstring isbn, bool available, wstring type) : title{ title }, author{ author }, isbn{ isbn }, available{ available }, type{ type } {
 	
 	}
 
-	string getTitle() const {
-		return title;
+	const wstring getTitle() const {
+		return title.c_str();
 	}
 
-	string getType() {
-		return type;
+	const wstring getType() const {
+		return type.c_str();
 	}
 
-	string getAuthor() const {
-		return author;
+	const wstring getAuthor() const {
+		return author.c_str();
 	}
 
-	string getISBN() const {
-		return isbn;
+	const wstring getISBN() const {
+		return isbn.c_str();
 	}
 
 	bool isAvailable() const {
@@ -59,10 +59,10 @@ public:
 	}
 
 private:
-	string title;
-	string author;
-	string isbn;
-	string type;
+	wstring title;
+	wstring author;
+	wstring isbn;
+	wstring type;
 	bool available;
 
 };
