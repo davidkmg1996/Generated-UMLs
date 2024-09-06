@@ -1,6 +1,0 @@
-CREATE TABLE users {
-
-userName varchar(255),
-address varchar(255)
-
-};
