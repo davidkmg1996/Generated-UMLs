@@ -333,8 +333,8 @@ void registrationWindow() {
 		0,
 		REG_NAME,
 		L"Register",
-		WS_OVERLAPPEDWINDOW,
-		100, 100, 800, 600,
+		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
+		100, 100, 400, 300,
 		nullptr,
 		nullptr,
 		hInstance,
@@ -502,6 +502,22 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		Edit_SetCueBannerText(password, pass);
 	}
 
+
+
+	case WM_COMMAND:
+		if (LOWORD(rParam) == BACK) {
+			DestroyWindow(rwnd);
+			showLoginWindow();
+			break;
+		}
+
+
+		/*
+		* WM_PAINT must come after
+		* WM_COMMAND to prevent unintended
+		* conseqeunces
+		*/
+
 	case WM_PAINT:
 		regMessage = BeginPaint(rwnd, &r);
 		SetTextColor(regMessage, RGB(0, 0, 0));
@@ -511,12 +527,6 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		EndPaint(rwnd, &r);
 		break;
 
-	case WM_COMMAND:
-		if (LOWORD(rParam) == BACK) {
-			DestroyWindow(rwnd);
-			showLoginWindow();
-			break;
-		}
 
 	case WM_CLOSE:
 		DestroyWindow(rwnd);
