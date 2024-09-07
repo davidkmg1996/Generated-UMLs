@@ -1,6 +1,7 @@
 #define NEW_BUTTON  2000
 #define QUIT 1000
 #define LOGIN 2000
+#define	REGISTER 2000
 bool bEmpty;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -332,7 +333,8 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	
 		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, lwnd, 0, inst2, 0);
 		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, lwnd, 0, inst2, 0);
-		CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 88, 100, 200, 40, lwnd, (HMENU)LOGIN, inst2, 0);
+		CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 88, 100, 100, 40, lwnd, (HMENU)LOGIN, inst2, 0);
+		CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 190, 100, 100, 40, lwnd, (HMENU)REGISTER, inst2, 0);
 		wchar_t user[] = L"Username";
 		wchar_t pass[] = L"Password";
 		Edit_SetCueBannerText(userName, user);
