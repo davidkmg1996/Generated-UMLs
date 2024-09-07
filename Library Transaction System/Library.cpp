@@ -29,7 +29,6 @@ using namespace std;
 * revelant so I wouldn't bother being nosey
 */
 
-HINSTANCE hInst;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
