@@ -1,12 +1,15 @@
 #define NEW_BUTTON  2000
 #define QUIT 1000
-#define LOGIN 2000
-#define	REGISTER 2000
+#define LOGIN 2250
+#define	REGISTER 2500
+#define TRUEREG 2750
+#define BACK 3000
 bool bEmpty;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL);
 LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL);
+LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL);
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
@@ -309,14 +312,51 @@ void showMainScreen() {
 		DispatchMessage(&msg);
 	}
 
+}
+
+
+void registrationWindow() {
+
+	wchar_t REG_NAME[500] = L"Register";
+	HINSTANCE hInstance = GetModuleHandle(nullptr);
+	WNDCLASS winR = {};
+	winR.lpfnWndProc = RegisterProc;
+	winR.hInstance = hInstance;
+	winR.lpszClassName = REG_NAME;
+	//Prevent black bars/ghosting
+	winR.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	winR.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+	RegisterClass(&winR);
+
+	HWND rwnd = CreateWindowEx(
+		0,
+		REG_NAME,
+		L"Register",
+		WS_OVERLAPPEDWINDOW,
+		100, 100, 800, 600,
+		nullptr,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	ShowWindowAsync(rwnd, SW_SHOW);
+	UpdateWindow(rwnd);
+
+	MSG msg2 = {};
+
+	while (GetMessage(&msg2, nullptr, 0, 0)) {
+		TranslateMessage(&msg2);
+		DispatchMessage(&msg2);
+	}
 
 
 }
 
-LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
-	
-	
+
+LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 	switch (lMsg) {
 
@@ -330,7 +370,6 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		static HWND userName;
 		static HWND password;
 		HINSTANCE inst2 = ((LPCREATESTRUCT)lParamL)->hInstance;
-	
 		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, lwnd, 0, inst2, 0);
 		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, lwnd, 0, inst2, 0);
 		CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 88, 100, 100, 40, lwnd, (HMENU)LOGIN, inst2, 0);
@@ -343,10 +382,18 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	}
 
 	case WM_COMMAND: {
+
 		if (LOWORD(lParam) == LOGIN) {
 			DestroyWindow(lwnd);
 			showMainScreen();
 			break;
+		}
+
+		else if (LOWORD(lParam) == REGISTER) {
+			DestroyWindow(lwnd);
+			registrationWindow();
+			break;
+
 		}
 	}
 
@@ -371,4 +418,116 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 	return DefWindowProc(lwnd, lMsg, lParam, lParamL);
 }
+
+void showLoginWindow() {
+	wchar_t LOG_NAME[500] = L"Login";
+	HINSTANCE hInstance = GetModuleHandle(nullptr);
+	WNDCLASS winL = {};
+	winL.lpfnWndProc = login;
+	winL.hInstance = hInstance;
+	winL.lpszClassName = LOG_NAME;
+	//Prevent black bars/ghosting
+	winL.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	winL.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+	RegisterClass(&winL);
+
+	HWND lwnd = CreateWindowEx(
+		0,
+		LOG_NAME,
+		L"Login",
+		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
+		100, 100, 400, 200,
+		nullptr,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	ShowWindowAsync(lwnd, SW_SHOW);
+	UpdateWindow(lwnd);
+
+
+
+	//Use CreateMenu() for menuBar
+
+
+	MSG nMes;
+
+	while (GetMessage(&nMes, nullptr, 0, 0)) {
+		TranslateMessage(&nMes);
+		DispatchMessage(&nMes);
+	}
+
+
+}
+
+
+
+LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL) {
+
+	switch (rMsg) {
+
+		PAINTSTRUCT r;
+		HDC regMessage;
+		RECT rm;
+
+	case WM_CREATE: {
+
+
+		static HWND firstName;
+		static HWND lastName;
+		static HWND address;
+		static HWND userName;
+		static HWND password;
+
+		HINSTANCE inst3 = ((LPCREATESTRUCT)rParamL)->hInstance;
+		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, rwnd, 0, inst3, 0);
+		lastName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, rwnd, 0, inst3, 0);
+		address = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 100, 200, 20, rwnd, 0, inst3, 0);
+		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 130, 200, 20, rwnd, 0, inst3, 0);
+		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 160, 200, 20, rwnd, 0, inst3, 0);
+		CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 88, 200, 100, 40, rwnd, (HMENU)TRUEREG, inst3, 0);
+		CreateWindowEx(0, L"button", L"Back", WS_CHILD | WS_VISIBLE, 190, 200, 100, 40, rwnd, (HMENU)BACK, inst3, 0);
+		wchar_t first[] = L"Enter your first Name";
+		wchar_t last[] = L"Enter your Last Name";
+		wchar_t add[] = L"Enter your Address";
+		wchar_t user[] = L"Choose a Username";
+		wchar_t pass[] = L"Choose a Password";
+
+		Edit_SetCueBannerText(firstName, first);
+		Edit_SetCueBannerText(lastName, last);
+		Edit_SetCueBannerText(address, add);
+		Edit_SetCueBannerText(userName, user);
+		Edit_SetCueBannerText(password, pass);
+	}
+
+	case WM_PAINT:
+		regMessage = BeginPaint(rwnd, &r);
+		SetTextColor(regMessage, RGB(0, 0, 0));
+		SetBkMode(regMessage, TRANSPARENT);
+		GetClientRect(rwnd, &rm);
+		DrawText(regMessage, L"Enter Registration Details Below", -1, &rm, DT_CENTER | DT_WORDBREAK);
+		EndPaint(rwnd, &r);
+		break;
+
+	case WM_COMMAND:
+		if (LOWORD(rParam) == BACK) {
+			DestroyWindow(rwnd);
+			showLoginWindow();
+			break;
+		}
+
+	case WM_CLOSE:
+		DestroyWindow(rwnd);
+		break;
+
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	}
+
+	return DefWindowProc(rwnd, rMsg, rParam, rParamL);
+}
+
 

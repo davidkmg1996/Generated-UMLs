@@ -33,46 +33,7 @@ HINSTANCE hInst;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
-	wchar_t LOG_NAME[500] = L"Login";
+	showLoginWindow();
 
-	WNDCLASS winL = {};
-	winL.lpfnWndProc = login;
-	winL.hInstance = hInstance;
-	winL.lpszClassName = LOG_NAME;
-	//Prevent black bars/ghosting
-	winL.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-	winL.hCursor = LoadCursor(nullptr, IDC_ARROW);
-
-	RegisterClass(&winL);
-
-	HWND lwnd = CreateWindowEx(
-		0,
-		LOG_NAME,
-		L"Login",
-		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
-		100, 100, 400, 200,
-		nullptr,
-		nullptr,
-		hInstance,
-		nullptr
-	);
-
-	ShowWindowAsync(lwnd, nCmdShow);
-	UpdateWindow(lwnd);
-
-	
-
-	//Use CreateMenu() for menuBar
-	
-
-	MSG nMes;
-
-	while (GetMessage(&nMes, nullptr, 0, 0)) {
-		TranslateMessage(&nMes);
-		DispatchMessage(&nMes);
-	}
-
-
-
-	return (int)nMes.wParam;
+	return 0;
 }
