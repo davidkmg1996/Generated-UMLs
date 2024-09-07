@@ -70,11 +70,23 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		if (LOWORD(wParam) == NEW_BUTTON) {
 			wchar_t tText[300];
 			wchar_t tAddress[300];
-			GetWindowText(textEdit, tText, 300);
 
-			GetWindowText(getAddress, tAddress, 300);
+			if (GetWindowText(textEdit, tText, 300) != NULL) {
+				GetWindowText(textEdit, tText, 300);
+			}
+			else {
+				return 0;
+			}
+			if (GetWindowText(getAddress, tAddress, 300) != NULL) {
+				GetWindowText(getAddress, tAddress, 300);
+			}
+			else {
+				return 0;
+			}
+			
 
 			//Use null character
+
 			for (int i = 0; tText[i] != '\0'; i++) {
 
 				if (!iswalpha(tText[i])) {
