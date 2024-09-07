@@ -33,33 +33,34 @@ HINSTANCE hInst;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
-	wchar_t LIB_NAME[500] = L"Library";
+	wchar_t LOG_NAME[500] = L"Login";
 
-	WNDCLASS winD = {};
-	winD.lpfnWndProc = WindowProc;
-	winD.hInstance = hInstance;
-	winD.lpszClassName = LIB_NAME;
+	WNDCLASS winL = {};
+	winL.lpfnWndProc = login;
+	winL.hInstance = hInstance;
+	winL.lpszClassName = LOG_NAME;
 	//Prevent black bars/ghosting
-	winD.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-	winD.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	winL.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	winL.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
-	RegisterClass(&winD);
+	RegisterClass(&winL);
 
-	HWND hwnd = CreateWindowEx(
+	HWND lwnd = CreateWindowEx(
 		0,
-		LIB_NAME,
-		L"Library Transaction System",
-		WS_OVERLAPPEDWINDOW,
-		100, 100, 800, 600,
+		LOG_NAME,
+		L"Login",
+		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
+		100, 100, 400, 200,
 		nullptr,
 		nullptr,
 		hInstance,
 		nullptr
 	);
 
-	ShowWindowAsync(hwnd, nCmdShow);
-	UpdateWindow(hwnd);
+	ShowWindowAsync(lwnd, nCmdShow);
+	UpdateWindow(lwnd);
 
+	
 
 	//Use CreateMenu() for menuBar
 	

@@ -1,9 +1,11 @@
 #define NEW_BUTTON  2000
 #define QUIT 1000
+#define LOGIN 2000
 bool bEmpty;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL);
+LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL);
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
@@ -142,16 +144,17 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			
 
 
-			const char* createTable = "CREATE TABLE users(userName varchar(255), address varchar(255), memberId int);";
+			const char* createTable = "CREATE TABLE users(userName varchar(255), address varchar(255), memberId int, type varchar(255));";
 			getDb = sqlite3_exec(db, createTable, 0, 0, 0);
 
-			const char* sqlStatement = "INSERT INTO users(userName, address, memberId) VALUES (?, ?, ?);";
+			const char* sqlStatement = "INSERT INTO users(userName, address, memberId, type) VALUES (?, ?, ?, ?); ";
 
 			getDb = sqlite3_prepare_v2(db, sqlStatement, -1, &n, 0);
 
 			sqlite3_bind_text(n, 1, name.c_str(), name.length(), SQLITE_STATIC);
 			sqlite3_bind_text(n, 2, address.c_str(), address.length(), SQLITE_STATIC);
 			sqlite3_bind_int(n, 3, sId);
+			sqlite3_bind_text(n, 4, "member", 10, SQLITE_STATIC);
 
 			getDb = sqlite3_step(n);
 
@@ -233,6 +236,7 @@ LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 
 	switch (eMsg) {
 
+
 	case WM_PAINT:
 		edc = BeginPaint(nwnd, &e);
 		SetTextColor(edc, RGB(0, 0, 0));
@@ -251,3 +255,107 @@ LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 	return DefWindowProc(nwnd, eMsg, eParam, eParamL);
 
 }
+
+void showMainScreen() {
+
+	wchar_t LIB_NAME[500] = L"Library";
+	HINSTANCE hInstance = GetModuleHandle(nullptr);
+	WNDCLASS winD = {};
+	winD.lpfnWndProc = WindowProc;
+	winD.hInstance = hInstance;
+	winD.lpszClassName = LIB_NAME;
+	//Prevent black bars/ghosting
+	winD.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	winD.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+	RegisterClass(&winD);
+
+	HWND hwnd = CreateWindowEx(
+		0,
+		LIB_NAME,
+		L"Library Transaction System",
+		WS_OVERLAPPEDWINDOW,
+		100, 100, 800, 600,
+		nullptr,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	ShowWindowAsync(hwnd, SW_SHOW);
+	UpdateWindow(hwnd);
+
+	MSG msg = {};
+
+	/*
+	* NEVER FORGET TO TRANSLATE AND
+	* DISPATCH MESSAGE
+	*/
+	while (GetMessage(&msg, nullptr, 0, 0)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+
+
+}
+
+LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
+
+	
+	
+
+	switch (lMsg) {
+
+		PAINTSTRUCT w;
+		HDC loginMessage;
+		RECT lm;
+
+	case WM_COMMAND: {
+		if (LOWORD(lParam) == LOGIN) {
+			DestroyWindow(lwnd);
+			showMainScreen();
+			break;
+		}
+	}
+
+	case WM_CREATE: {
+		static HWND userName;
+		static HWND password;
+		HINSTANCE inst2 = ((LPCREATESTRUCT)lParamL)->hInstance;
+		/*
+		* Currently, entering text into these boxes
+		* crashes the program. WIll fix later
+		*/
+		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, lwnd, 0, inst2, 0);
+		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, lwnd, 0, inst2, 0);
+		CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 88, 100, 200, 40, lwnd, (HMENU)LOGIN, inst2, 0);
+		wchar_t user[] = L"Username";
+		wchar_t pass[] = L"Password";
+		Edit_SetCueBannerText(userName, user);
+		Edit_SetCueBannerText(password, pass);
+		break;
+	}
+
+
+	case WM_PAINT:
+		loginMessage = BeginPaint(lwnd, &w);
+		SetTextColor(loginMessage, RGB(0, 0, 0));
+		SetBkMode(loginMessage, TRANSPARENT);
+		GetClientRect(lwnd, &lm);
+		DrawText(loginMessage, L"Please Enter Your Username and Password", -1, &lm, DT_CENTER | DT_WORDBREAK);
+		EndPaint(lwnd, &w);
+		break;
+
+	case WM_CLOSE:
+		DestroyWindow(lwnd);
+		break;
+
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	}
+
+	return DefWindowProc(lwnd, lMsg, lParam, lParamL);
+}
+
