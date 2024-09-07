@@ -323,22 +323,13 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		HDC loginMessage;
 		RECT lm;
 
-	case WM_COMMAND: {
-		if (LOWORD(lParam) == LOGIN) {
-			DestroyWindow(lwnd);
-			showMainScreen();
-			break;
-		}
-	}
+
 
 	case WM_CREATE: {
 		static HWND userName;
 		static HWND password;
 		HINSTANCE inst2 = ((LPCREATESTRUCT)lParamL)->hInstance;
-		/*
-		* Currently, entering text into these boxes
-		* crashes the program. WIll fix later
-		*/
+	
 		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, lwnd, 0, inst2, 0);
 		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, lwnd, 0, inst2, 0);
 		CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 88, 100, 200, 40, lwnd, (HMENU)LOGIN, inst2, 0);
@@ -347,6 +338,14 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		Edit_SetCueBannerText(userName, user);
 		Edit_SetCueBannerText(password, pass);
 		break;
+	}
+
+	case WM_COMMAND: {
+		if (LOWORD(lParam) == LOGIN) {
+			DestroyWindow(lwnd);
+			showMainScreen();
+			break;
+		}
 	}
 
 
