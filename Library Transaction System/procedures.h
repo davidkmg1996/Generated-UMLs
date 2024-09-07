@@ -466,20 +466,33 @@ void showLoginWindow() {
 
 LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL) {
 
+	
+
+	static HWND firstName;
+	static HWND lastName;
+	static HWND address;
+	static HWND userName;
+	static HWND password;
+
+	string firstN;
+	string lastN;
+	string addr;
+	string userN;
+	string passW;
+
 	switch (rMsg) {
 
 		PAINTSTRUCT r;
 		HDC regMessage;
 		RECT rm;
+		
+
+
 
 	case WM_CREATE: {
 
 
-		static HWND firstName;
-		static HWND lastName;
-		static HWND address;
-		static HWND userName;
-		static HWND password;
+		
 
 		HINSTANCE inst3 = ((LPCREATESTRUCT)rParamL)->hInstance;
 		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, rwnd, 0, inst3, 0);
@@ -505,10 +518,76 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 
 
 	case WM_COMMAND:
+
+		sqlite3* db;
+		int getDb;
+		sqlite3_stmt* n;
+		/*
+		* think, squarepants, think!
+		*/
+		getDb = sqlite3_open("registered", &db);
+
 		if (LOWORD(rParam) == BACK) {
 			DestroyWindow(rwnd);
 			showLoginWindow();
 			break;
+		}
+		else if (LOWORD(rParam) == TRUEREG) {
+
+			wchar_t fName[300];
+			wchar_t lName[300];
+			wchar_t add[300];
+			wchar_t uName[300];
+			wchar_t tText[300];
+			wchar_t pWord[300];
+
+			const char* regTable = "CREATE TABLE registered(firstName varchar(255), lastName varchar(255), address varchar(255), username varchar(255), password varchar(255));";
+			getDb = sqlite3_exec(db, regTable, 0, 0, 0);
+
+			const char* sqlStatement = "INSERT INTO registered(firstName, lastName, address, username, password) VALUES (?, ?, ?, ?, ?);";
+
+			if ((GetWindowText(firstName, fName, 300) != NULL) && (GetWindowText(lastName, lName, 300) != NULL) && (GetWindowText(address, add, 300) != NULL) && (GetWindowText(userName, uName, 300) != NULL) && (GetWindowText(password, pWord, 300) != NULL)) {
+				GetWindowText(firstName, fName, 300);
+				GetWindowText(lastName, lName, 300);
+				GetWindowText(address, add, 300);
+				GetWindowText(userName, uName, 300);
+				GetWindowText(password, pWord, 300);
+			}
+			else {
+				return 0;
+			}
+
+			wstring firstN3 = fName;
+			string firstN2(firstN3.begin(), firstN3.end());
+			firstN = firstN2;
+
+			wstring lastN3 = lName;
+			string lastN2(lastN3.begin(), lastN3.end());
+			lastN = lastN2;
+
+			wstring addr3 = add;
+			string addr2(addr3.begin(), addr3.end());
+			addr = addr2;
+
+			wstring userN3 = uName;
+			string userN2(userN3.begin(), userN3.end());
+			userN = userN2;
+
+			wstring passW3 = pWord;
+			string passW2(passW3.begin(), passW3.end());
+			passW = passW2;
+
+
+			getDb = sqlite3_prepare_v2(db, sqlStatement, -1, &n, 0);
+
+			sqlite3_bind_text(n, 1, firstN.c_str(), firstN.length(), SQLITE_STATIC);
+			sqlite3_bind_text(n, 2, lastN.c_str(), lastN.length(), SQLITE_STATIC);
+			sqlite3_bind_text(n, 3, addr.c_str(), addr.length(), SQLITE_STATIC);
+			sqlite3_bind_text(n, 4, userN.c_str(), userN.length(), SQLITE_STATIC);
+			sqlite3_bind_text(n, 5, passW.c_str(), passW.length(), SQLITE_STATIC);
+
+			getDb = sqlite3_step(n);
+			sqlite3_finalize(n);
 		}
 
 
