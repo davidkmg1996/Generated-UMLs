@@ -364,6 +364,11 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		HDC loginMessage;
 		RECT lm;
 
+		//sqlite3* db;
+		//int getDb;
+
+		//getDb = sqlite3_open("registered", &db);
+
 
 
 	case WM_CREATE: {
@@ -384,6 +389,10 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	case WM_COMMAND: {
 
 		if (LOWORD(lParam) == LOGIN) {
+
+			//const char* openUsers = "SELECT users FROM registered;";
+			//getDb = sqlite3_exec(db, openUsers, 0, 0, 0);
+
 			DestroyWindow(lwnd);
 			showMainScreen();
 			break;
@@ -486,13 +495,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		HDC regMessage;
 		RECT rm;
 		
-
-
-
 	case WM_CREATE: {
-
-
-		
 
 		HINSTANCE inst3 = ((LPCREATESTRUCT)rParamL)->hInstance;
 		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, rwnd, 0, inst3, 0);
@@ -514,8 +517,6 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		Edit_SetCueBannerText(userName, user);
 		Edit_SetCueBannerText(password, pass);
 	}
-
-
 
 	case WM_COMMAND:
 
@@ -541,7 +542,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 			wchar_t tText[300];
 			wchar_t pWord[300];
 
-			const char* regTable = "CREATE TABLE registered(firstName varchar(255), lastName varchar(255), address varchar(255), username varchar(255), password varchar(255));";
+			const char* regTable = "CREATE TABLE registered(firstName varchar(255), lastName varchar(255), address varchar(255), username varchar(255) UNIQUE, password varchar(255));";
 			getDb = sqlite3_exec(db, regTable, 0, 0, 0);
 
 			const char* sqlStatement = "INSERT INTO registered(firstName, lastName, address, username, password) VALUES (?, ?, ?, ?, ?);";
