@@ -48,9 +48,20 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		Edit_SetCueBannerText(getAddress, pAddress);
 
 		HMENU menuBar = CreateMenu();
-		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)menuBar, L"File");
-		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)menuBar, L"About");
-		AppendMenu(menuBar, MF_STRING, QUIT, L"Quit");
+		HMENU fMenu = CreatePopupMenu();
+		AppendMenu(fMenu, MF_STRING, 0, L"Open Catalog");
+		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)fMenu, L"File");
+
+		HMENU aMenu = CreatePopupMenu();
+		AppendMenu(aMenu, MF_STRING, 0, L"About This Program");
+		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)aMenu, L"About");
+
+
+		HMENU oMenu = CreatePopupMenu();
+		AppendMenu(oMenu, MF_STRING, QUIT, L"Quit");
+		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)oMenu, L"Options");
+
+
 		SetMenu(hwnd, menuBar);
 
 		break;
@@ -358,20 +369,32 @@ void registrationWindow() {
 
 LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
-	switch (lMsg) {
+	static HFONT font;
 
-		PAINTSTRUCT w;
-		HDC loginMessage;
+	switch (lMsg) {
+		
 		RECT lm;
 
-		//sqlite3* db;
-		//int getDb;
-
-		//getDb = sqlite3_open("registered", &db);
-
-
-
 	case WM_CREATE: {
+
+		font = CreateFont(
+			20,
+			0,
+			0,
+			0,
+			FW_NORMAL,
+			FALSE,
+			FALSE,
+			FALSE,
+			DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS,
+			CLIP_DEFAULT_PRECIS,
+			DEFAULT_QUALITY,
+			DEFAULT_PITCH || FF_SWISS,
+			TEXT("Helvetica"));
+
+		InvalidateRect(lwnd, NULL, TRUE);
+
 		static HWND userName;
 		static HWND password;
 		HINSTANCE inst2 = ((LPCREATESTRUCT)lParamL)->hInstance;
@@ -383,6 +406,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		wchar_t pass[] = L"Password";
 		Edit_SetCueBannerText(userName, user);
 		Edit_SetCueBannerText(password, pass);
+
 		break;
 	}
 
@@ -390,7 +414,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 		if (LOWORD(lParam) == LOGIN) {
 
-			//const char* openUsers = "SELECT users FROM registered;";
+			const char* openUsers = "SELECT users FROM registered;";
 			//getDb = sqlite3_exec(db, openUsers, 0, 0, 0);
 
 			DestroyWindow(lwnd);
@@ -407,14 +431,21 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	}
 
 
-	case WM_PAINT:
-		loginMessage = BeginPaint(lwnd, &w);
-		SetTextColor(loginMessage, RGB(0, 0, 0));
+	case WM_PAINT: {
+
+		PAINTSTRUCT w;
+		HDC loginMessage = BeginPaint(lwnd, &w);
+
+		HFONT oFont = (HFONT)SelectObject(loginMessage, font);
+		SetTextColor(loginMessage, RGB(0, 0, 0));;
 		SetBkMode(loginMessage, TRANSPARENT);
 		GetClientRect(lwnd, &lm);
-		DrawText(loginMessage, L"Please Enter Your Username and Password", -1, &lm, DT_CENTER | DT_WORDBREAK);
+		DrawText(loginMessage, L"Please Enter Username and Password", -1, &lm, DT_CENTER | DT_VCENTER | DT_WORDBREAK);
+
+	
 		EndPaint(lwnd, &w);
 		break;
+	}
 
 	case WM_CLOSE:
 		DestroyWindow(lwnd);
@@ -588,6 +619,8 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 			sqlite3_bind_text(n, 5, passW.c_str(), passW.length(), SQLITE_STATIC);
 
 			getDb = sqlite3_step(n);
+
+
 			sqlite3_finalize(n);
 		}
 
