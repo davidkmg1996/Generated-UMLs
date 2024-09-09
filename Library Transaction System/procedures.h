@@ -224,10 +224,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			RECT r;
 			HDC hdc = BeginPaint(hwnd, &p);
 			HFONT oFont = (HFONT)SelectObject(hdc, font);
-			SetTextColor(hdc, RGB(0, 0, 0));;
-			SetBkMode(hdc, TRANSPARENT);
-			GetClientRect(hwnd, &r);
-
+	
 			/*
 			* TextOut(param1, param2, . . . , param5)
 			* does not support carriage return
