@@ -1,15 +1,9 @@
 #ifndef MS_H
 #define MS_H
-#include <iostream>
-#include <string>
-#include <vector>
 #include "Member.h"
 #include "Book.h"
-#include "tchar.h"
 #include "Transaction.h"
 
-
-using namespace std;
 
 class Library{
 

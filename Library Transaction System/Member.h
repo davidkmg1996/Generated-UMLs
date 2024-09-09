@@ -1,11 +1,5 @@
 #ifndef MEMBER_H
 #define MEMBER_H
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <random>
-#include <ctime>
 #include "Book.h"
 #include "Transaction.h"
 

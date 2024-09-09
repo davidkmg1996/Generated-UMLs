@@ -14,7 +14,6 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "MS.h"
 #include "Book.h"
 #include "Member.h"
-#include "tchar.h"
 #include "Transaction.h"
 #include "procedures.h"
 

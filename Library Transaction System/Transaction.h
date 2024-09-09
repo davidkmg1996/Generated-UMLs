@@ -1,14 +1,9 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
-#include <iostream>
-#include <string>
-#include <vector>
-#include <random>
+
 #include "Book.h"
 #include "Member.h"
 #include <ctime>
-
-using namespace std;
 
 
 /*
