@@ -15,6 +15,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	vector<Book> bVector;
 
+	static HFONT font;
+
 	static wstring out;
 
 	BS_PUSHBUTTON();
@@ -37,6 +39,24 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	case WM_CREATE:
 	{
+		font = CreateFont(
+			20,
+			0,
+			0,
+			0,
+			FW_NORMAL,
+			FALSE,
+			FALSE,
+			FALSE,
+			DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS,
+			CLIP_DEFAULT_PRECIS,
+			DEFAULT_QUALITY,
+			DEFAULT_PITCH || FF_SWISS,
+			TEXT("Helvetica"));
+
+		InvalidateRect(hwnd, NULL, TRUE);
+
 		HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
 
 		CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
@@ -200,9 +220,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	case WM_PAINT:
 
 	{
-		PAINTSTRUCT p;
-
+			PAINTSTRUCT p;
+			RECT r;
 			HDC hdc = BeginPaint(hwnd, &p);
+			HFONT oFont = (HFONT)SelectObject(hdc, font);
+			SetTextColor(hdc, RGB(0, 0, 0));;
+			SetBkMode(hdc, TRANSPARENT);
+			GetClientRect(hwnd, &r);
 
 			/*
 			* TextOut(param1, param2, . . . , param5)
@@ -210,8 +234,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			*
 			* and neither do I
 			*/
-
-			RECT r;
 
 			GetClientRect(hwnd, &r);
 			SetTextColor(hdc, RGB(0, 0, 0));
@@ -527,6 +549,8 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		RECT rm;
 		
 	case WM_CREATE: {
+
+
 
 		HINSTANCE inst3 = ((LPCREATESTRUCT)rParamL)->hInstance;
 		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, rwnd, 0, inst3, 0);
