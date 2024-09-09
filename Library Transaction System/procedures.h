@@ -240,7 +240,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			SetBkMode(hdc, TRANSPARENT);
 
 			if (bEmpty == false) {
-				DrawText(hdc, out.c_str(), -1, &r, DT_WORDBREAK);
+				DrawText(hdc, out.c_str(), -1, &r, DT_WORDBREAK | DT_CENTER);
 			}
 		
 
