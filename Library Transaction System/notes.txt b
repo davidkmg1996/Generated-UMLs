@@ -1,5 +1,0 @@
-- x64 debug surpasses available heap memory for 32-bit ( . . . sometimes)
-- increase heap allocation reserve and run debug/release in x86
-
-
-
