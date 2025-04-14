@@ -28,10 +28,10 @@ public:
 	const wstring getType() const {
 		/*
 		* Not to be confused with the return type of
-		* this function, which is, of course, std::string,
+		* this function, which is, of course, std::wstring,
 		* included in the user-defined class Transaction
 		* and accessed via the type member variable
-		* std::string type, returned by the member function
+		* std::wstring type, returned by the member function
 		* getType() const using the statement this->type,
 		* shorthand for the less syntactically ambiguous
 		* (albeit more complex) statement (*this).type
