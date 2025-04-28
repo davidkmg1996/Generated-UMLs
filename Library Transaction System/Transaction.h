@@ -35,7 +35,6 @@ public:
 		* getType() const using the statement this->type,
 		* shorthand for the less syntactically ambiguous
 		* (albeit more complex) statement (*this).type
-	
 		* 
 		*
 		*obviously
