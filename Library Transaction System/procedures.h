@@ -1,5 +1,6 @@
 #include "vars.h"
 #define NEW_BUTTON  2000
+#define ABOUT 2250
 #define QUIT 1000
 #define LOGIN 2250
 #define	REGISTER 2500
@@ -128,7 +129,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)oMenu, L"Options");
 
 		HMENU aMenu = CreatePopupMenu();
-		AppendMenu(aMenu, MF_STRING, 0, L"About This Program");
+		AppendMenu(aMenu, MF_STRING, ABOUT, L"About This Program");
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)aMenu, L"About");
 
 		SetMenu(hwnd, menuBar);
@@ -267,6 +268,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			DestroyWindow(hwnd);
 			showLoginWindow();
 		}
+
+		if (LOWORD(wParam) == ABOUT) {
+			MessageBox(hwnd, L"Library Management System\n\nVersion 0.2.1\n\nCreated by: davidkmg1996", L"About", MB_OK | MB_ICONINFORMATION);
+		}
+
 		break;
 	}
 
@@ -580,12 +586,8 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 }
 
 
-
-
-
 LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL) {
 
-	
 
 	static HWND firstName;
 	static HWND lastName;
