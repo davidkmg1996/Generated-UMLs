@@ -4,12 +4,58 @@
 #define	REGISTER 2500
 #define TRUEREG 2750
 #define BACK 3000
+#define MEMBER 3250
+#define LOGOUT 3300
 bool bEmpty;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL);
 LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL);
 LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL);
+
+void showLoginWindow() {
+	wchar_t LOG_NAME[500] = L"Login";
+	HINSTANCE hInstance = GetModuleHandle(nullptr);
+	WNDCLASS winL = {};
+	winL.lpfnWndProc = login;
+	winL.hInstance = hInstance;
+	winL.lpszClassName = LOG_NAME;
+	//Prevent black bars/ghosting
+	winL.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	winL.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+	RegisterClass(&winL);
+
+	HWND lwnd = CreateWindowEx(
+		0,
+		LOG_NAME,
+		L"Login",
+		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
+		100, 100, 400, 200,
+		nullptr,
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	ShowWindowAsync(lwnd, SW_SHOW);
+	UpdateWindow(lwnd);
+
+
+
+	//Use CreateMenu() for menuBar
+
+
+	MSG nMes;
+
+	while (GetMessage(&nMes, nullptr, 0, 0)) {
+		TranslateMessage(&nMes);
+		DispatchMessage(&nMes);
+	}
+
+
+}
+
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
@@ -72,15 +118,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		AppendMenu(fMenu, MF_STRING, 0, L"Open Catalog");
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)fMenu, L"File");
 
+		HMENU oMenu = CreatePopupMenu();
+		AppendMenu(oMenu, MF_STRING, QUIT, L"Quit");
+		AppendMenu(oMenu, MF_STRING, LOGOUT, L"Log Out");
+		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)oMenu, L"Options");
+
 		HMENU aMenu = CreatePopupMenu();
 		AppendMenu(aMenu, MF_STRING, 0, L"About This Program");
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)aMenu, L"About");
-
-
-		HMENU oMenu = CreatePopupMenu();
-		AppendMenu(oMenu, MF_STRING, QUIT, L"Quit");
-		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)oMenu, L"Options");
-
 
 		SetMenu(hwnd, menuBar);
 
@@ -213,6 +258,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			DestroyWindow(hwnd);
 			PostQuitMessage(0);
 		}
+
+		if (LOWORD(wParam) == LOGOUT) {
+			DestroyWindow(hwnd);
+			showLoginWindow();
+		}
 		break;
 	}
 
@@ -272,6 +322,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
+
+
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 
 	PAINTSTRUCT e;
@@ -301,6 +353,8 @@ LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 	return DefWindowProc(nwnd, eMsg, eParam, eParamL);
 
 }
+
+
 
 void showMainScreen() {
 
@@ -389,6 +443,10 @@ void registrationWindow() {
 LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 	static HFONT font;
+	wchar_t userN[256];
+	wchar_t passN[256];
+	static HWND userName;
+	static HWND password;
 
 	switch (lMsg) {
 		
@@ -414,8 +472,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 		InvalidateRect(lwnd, NULL, TRUE);
 
-		static HWND userName;
-		static HWND password;
+		
 		HINSTANCE inst2 = ((LPCREATESTRUCT)lParamL)->hInstance;
 		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, lwnd, 0, inst2, 0);
 		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, lwnd, 0, inst2, 0);
@@ -426,6 +483,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		Edit_SetCueBannerText(userName, user);
 		Edit_SetCueBannerText(password, pass);
 
+
 		break;
 	}
 
@@ -433,11 +491,43 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 		if (LOWORD(lParam) == LOGIN) {
 
-			const char* openUsers = "SELECT users FROM registered;";
-			//getDb = sqlite3_exec(db, openUsers, 0, 0, 0);
+			GetWindowText(userName, userN, sizeof(userN) / sizeof(wchar_t));
+		
+			sqlite3* db;
+			int getDb = sqlite3_open("registered", &db);;
+			const char* openUsers = "SELECT * FROM registered WHERE username = ?";
+			sqlite3_stmt* n;
 
-			DestroyWindow(lwnd);
-			showMainScreen();
+		
+			getDb = sqlite3_prepare_v2(db, openUsers, -1, &n, nullptr);
+			string username(userN, userN + wcslen(userN));
+			sqlite3_bind_text(n, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+
+			getDb = sqlite3_step(n);
+
+			if (getDb != SQLITE_OK && getDb != SQLITE_ROW && getDb != SQLITE_DONE) {
+				MessageBox(lwnd, L"Failed to prepare statement", L"Error", MB_OK | MB_ICONERROR);
+				MessageBoxA(lwnd, sqlite3_errmsg(db), "SQLite Error", MB_OK | MB_ICONERROR);
+				sqlite3_close(db);
+				return 0;
+			}
+
+
+			if (getDb == SQLITE_ROW) {
+				
+				DestroyWindow(lwnd);
+				showMainScreen();
+			}
+			else if (getDb == SQLITE_DONE) {
+				
+				DestroyWindow(lwnd);
+				registrationWindow();
+			}
+
+			sqlite3_finalize(n);
+			sqlite3_close(db);
+
+			
 			break;
 		}
 
@@ -448,6 +538,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 		}
 	}
+
 
 
 	case WM_PAINT: {
@@ -478,48 +569,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	return DefWindowProc(lwnd, lMsg, lParam, lParamL);
 }
 
-void showLoginWindow() {
-	wchar_t LOG_NAME[500] = L"Login";
-	HINSTANCE hInstance = GetModuleHandle(nullptr);
-	WNDCLASS winL = {};
-	winL.lpfnWndProc = login;
-	winL.hInstance = hInstance;
-	winL.lpszClassName = LOG_NAME;
-	//Prevent black bars/ghosting
-	winL.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-	winL.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
-	RegisterClass(&winL);
-
-	HWND lwnd = CreateWindowEx(
-		0,
-		LOG_NAME,
-		L"Login",
-		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
-		100, 100, 400, 200,
-		nullptr,
-		nullptr,
-		hInstance,
-		nullptr
-	);
-
-	ShowWindowAsync(lwnd, SW_SHOW);
-	UpdateWindow(lwnd);
-
-
-
-	//Use CreateMenu() for menuBar
-
-
-	MSG nMes;
-
-	while (GetMessage(&nMes, nullptr, 0, 0)) {
-		TranslateMessage(&nMes);
-		DispatchMessage(&nMes);
-	}
-
-
-}
 
 
 
@@ -672,6 +722,10 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 	}
 
 	return DefWindowProc(rwnd, rMsg, rParam, rParamL);
+
+
 }
+
+
 
 
