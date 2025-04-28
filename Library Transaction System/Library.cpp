@@ -16,6 +16,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "Member.h"
 #include "Transaction.h"
 #include "procedures.h"
+#include "vars.h"
 
 using namespace std;
 
@@ -28,9 +29,8 @@ using namespace std;
 * revelant so I wouldn't bother being nosey
 */
 
-
  int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-
+	
 	showLoginWindow();
 
 	return 0;

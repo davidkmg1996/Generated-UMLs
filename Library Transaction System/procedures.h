@@ -1,3 +1,4 @@
+#include "vars.h"
 #define NEW_BUTTON  2000
 #define QUIT 1000
 #define LOGIN 2250
@@ -6,6 +7,7 @@
 #define BACK 3000
 #define MEMBER 3250
 #define LOGOUT 3300
+varsH v;
 bool bEmpty;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -367,13 +369,14 @@ void showMainScreen() {
 	//Prevent black bars/ghosting
 	winD.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 	winD.hCursor = LoadCursor(nullptr, IDC_ARROW);
-
 	RegisterClass(&winD);
+	wstring header = L"Library Transaction System (" + v.getUsername() + L")";
+	LPCWSTR head = header.c_str();
 
 	HWND hwnd = CreateWindowEx(
 		0,
 		LIB_NAME,
-		L"Library Transaction System",
+		head,
 		WS_OVERLAPPEDWINDOW,
 		100, 100, 800, 600,
 		nullptr,
@@ -501,6 +504,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		
 			getDb = sqlite3_prepare_v2(db, openUsers, -1, &n, nullptr);
 			string username(userN, userN + wcslen(userN));
+			v.setUsername(userN);
 			sqlite3_bind_text(n, 1, username.c_str(), -1, SQLITE_TRANSIENT);
 
 			getDb = sqlite3_step(n);
