@@ -16,12 +16,14 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL);
 LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL);
 
 void showLoginWindow() {
+	HICON hIcon = (HICON)LoadImage(NULL, L"newlts.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
 	wchar_t LOG_NAME[500] = L"Login";
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 	WNDCLASS winL = {};
 	winL.lpfnWndProc = login;
 	winL.hInstance = hInstance;
 	winL.lpszClassName = LOG_NAME;
+	winL.hIcon = hIcon;
 	//Prevent black bars/ghosting
 	winL.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 	winL.hCursor = LoadCursor(nullptr, IDC_ARROW);
@@ -362,10 +364,12 @@ void showMainScreen() {
 
 	wchar_t LIB_NAME[500] = L"Library";
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
+	HICON hIcon = (HICON)LoadImage(NULL, L"newlts.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
 	WNDCLASS winD = {};
 	winD.lpfnWndProc = WindowProc;
 	winD.hInstance = hInstance;
 	winD.lpszClassName = LIB_NAME;
+	winD.hIcon = hIcon;
 	//Prevent black bars/ghosting
 	winD.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 	winD.hCursor = LoadCursor(nullptr, IDC_ARROW);
@@ -405,6 +409,7 @@ void showMainScreen() {
 void registrationWindow() {
 
 	wchar_t REG_NAME[500] = L"Register";
+	HICON hIcon = (HICON)LoadImage(NULL, L"newlts.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 	WNDCLASS winR = {};
 	winR.lpfnWndProc = RegisterProc;
@@ -413,6 +418,7 @@ void registrationWindow() {
 	//Prevent black bars/ghosting
 	winR.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 	winR.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	winR.hIcon = hIcon;
 
 	RegisterClass(&winR);
 
