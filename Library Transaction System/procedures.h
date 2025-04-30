@@ -1,5 +1,4 @@
 #include "vars.h"
-#define NEW_BUTTON  2000
 #define ABOUT 2250
 #define QUIT 1000
 #define LOGIN 2250
@@ -109,15 +108,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		InvalidateRect(hwnd, NULL, TRUE);
 
 		HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
-
-		CreateWindowEx(0, L"button", L"Register Member", WS_CHILD | WS_VISIBLE, 300, 400, 175, 50, hwnd, (HMENU)NEW_BUTTON, inst, 0);
-		textEdit = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 335, 250, 20, hwnd, 0, inst, 0);
-		getAddress = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 260, 370, 250, 20, hwnd, 0, inst, 0);
-		wchar_t placeholder[] = L"Enter a member name";
-		wchar_t pAddress[] = L"Please enter an address";
-		Edit_SetCueBannerText(textEdit, placeholder);
-		Edit_SetCueBannerText(getAddress, pAddress);
-
+	
 		HMENU menuBar = CreateMenu();
 		HMENU fMenu = CreatePopupMenu();
 		AppendMenu(fMenu, MF_STRING, 0, L"Open Catalog");
@@ -141,123 +132,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	case WM_COMMAND:
 	{
 
-		sqlite3* db;
-		int getDb;
-
-		getDb = sqlite3_open("users", &db);
-
-		string name;
-		string address;
-		int sId;
-		sqlite3_stmt* n;
-		int errShow = SW_SHOWNORMAL;
-
-		if (LOWORD(wParam) == NEW_BUTTON) {
-			wchar_t tText[300];
-			wchar_t tAddress[300];
-
-			if (GetWindowText(textEdit, tText, 300) != NULL) {
-				GetWindowText(textEdit, tText, 300);
-			}
-			else {
-				return 0;
-			}
-			if (GetWindowText(getAddress, tAddress, 300) != NULL) {
-				GetWindowText(getAddress, tAddress, 300);
-			}
-			else {
-				return 0;
-			}
 			
-
-			//Use null character
-
-			for (int i = 0; tText[i] != '\0'; i++) {
-
-				if (!iswalpha(tText[i])) {
-
-				bEmpty = true;
-
-				HINSTANCE nInst = GetModuleHandle(nullptr);
-				wchar_t errorLib[50] = L"ERROR";
-
-				WNDCLASS errorWindow = {};
-				errorWindow.lpfnWndProc = nProc;
-				errorWindow.hInstance = nInst;
-				errorWindow.lpszClassName = errorLib;
-				errorWindow.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-				errorWindow.hCursor = LoadCursor(nullptr, IDC_ARROW);
-
-				RegisterClass(&errorWindow);
-
-				HWND eMenu = CreateWindowEx(
-					0,
-					errorLib,
-					L"Error",
-					WS_OVERLAPPEDWINDOW,
-					100, 100, 400, 100,
-					nullptr,
-					nullptr,
-					nInst,
-					nullptr
-
-				);
-
-				ShowWindow(eMenu, errShow);
-				UpdateWindow(eMenu);
-				break;
-
-				}
-				else {
-					bEmpty = false;
-					Member* m1 = new Member(tText, tAddress, 999, bVector);
-					out = lib.RegisterMember(m1);
-
-					ofstream nstream("users.txt", std::ios::app);
-
-					wstring sName = m1->getName();
-					string name2(sName.begin(), sName.end());
-					name = name2;
-
-					wstring sAddress = m1->getAddress();
-					string address2(sAddress.begin(), sAddress.end());
-					address = address2;
-
-
-					sId = m1->getMemberId();
-					
-					string sInfoN(sName.begin(), sName.end());
-
-					nstream << sInfoN << endl;
-					nstream << sId << endl;
-
-
-					InvalidateRect(hwnd, NULL, true);
-
-				}
-
-			}
-
-			
-
-
-			const char* createTable = "CREATE TABLE users(userName varchar(255), address varchar(255), memberId int, type varchar(255));";
-			getDb = sqlite3_exec(db, createTable, 0, 0, 0);
-
-			const char* sqlStatement = "INSERT INTO users(userName, address, memberId, type) VALUES (?, ?, ?, ?); ";
-
-			getDb = sqlite3_prepare_v2(db, sqlStatement, -1, &n, 0);
-
-			sqlite3_bind_text(n, 1, name.c_str(), name.length(), SQLITE_STATIC);
-			sqlite3_bind_text(n, 2, address.c_str(), address.length(), SQLITE_STATIC);
-			sqlite3_bind_int(n, 3, sId);
-			sqlite3_bind_text(n, 4, "member", 10, SQLITE_STATIC);
-
-			getDb = sqlite3_step(n);
-
-			sqlite3_finalize(n);
-
-		}
 
 		if (LOWORD(wParam) == QUIT) {
 			DestroyWindow(hwnd);
