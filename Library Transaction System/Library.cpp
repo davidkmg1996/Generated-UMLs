@@ -33,8 +33,6 @@ using namespace std;
 
  int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
-
-	
 	showLoginWindow();
 
 	return 0;
