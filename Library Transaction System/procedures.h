@@ -1,6 +1,7 @@
 #include "vars.h"
 #define ABOUT 2250
 #define QUIT 1000
+#define OPEN 2255
 #define LOGIN 2250
 #define	REGISTER 2500
 #define TRUEREG 2750
@@ -95,7 +96,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	
 		HMENU menuBar = CreateMenu();
 		HMENU fMenu = CreatePopupMenu();
-		AppendMenu(fMenu, MF_STRING, 0, L"Open Catalog");
+		AppendMenu(fMenu, MF_STRING, OPEN, L"Open Catalog");
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)fMenu, L"File");
 
 
@@ -129,6 +130,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 		if (LOWORD(wParam) == ABOUT) {
 			MessageBox(hwnd, L"Library Management System\n\nVersion 0.2.1\n\nCreated by: davidkmg1996", L"About", MB_OK | MB_ICONINFORMATION);
+		}
+
+		if (LOWORD(wParam) == OPEN) {
+			ShellExecute(NULL, L"open", L"C:\\", NULL, NULL, SW_SHOWDEFAULT);
 		}
 
 		break;
@@ -466,7 +471,6 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		RECT rm;
 		
 	case WM_CREATE: {
-
 
 
 		HINSTANCE inst3 = ((LPCREATESTRUCT)rParamL)->hInstance;

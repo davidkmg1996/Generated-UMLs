@@ -5,6 +5,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <winrt/Windows.Web.Syndication.h>
 #include <windows.h>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <algorithm>
 #include <commctrl.h>
@@ -17,6 +18,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "Transaction.h"
 #include "procedures.h"
 #include "vars.h"
+#include <shellapi.h>
 
 using namespace std;
 
