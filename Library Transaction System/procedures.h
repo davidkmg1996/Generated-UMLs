@@ -63,16 +63,11 @@ void showLoginWindow() {
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
-	vector<Book> bVector;
-
 	static HFONT font;
 
 	static wstring out;
 
 	BS_PUSHBUTTON();
-
-	static HWND textEdit;
-	static HWND getAddress;
 
 	switch (uMsg) {
 
