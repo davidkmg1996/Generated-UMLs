@@ -114,14 +114,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		AppendMenu(fMenu, MF_STRING, 0, L"Open Catalog");
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)fMenu, L"File");
 
-		HMENU oMenu = CreatePopupMenu();
-		AppendMenu(oMenu, MF_STRING, QUIT, L"Quit");
-		AppendMenu(oMenu, MF_STRING, LOGOUT, L"Log Out");
-		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)oMenu, L"Options");
 
 		HMENU aMenu = CreatePopupMenu();
 		AppendMenu(aMenu, MF_STRING, ABOUT, L"About This Program");
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)aMenu, L"About");
+
+		HMENU oMenu = CreatePopupMenu();
+		AppendMenu(oMenu, MF_STRING, QUIT, L"Quit");
+		AppendMenu(oMenu, MF_STRING, LOGOUT, L"Log Out");
+		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)oMenu, L"Options");
 
 		SetMenu(hwnd, menuBar);
 
