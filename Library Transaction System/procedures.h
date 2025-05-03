@@ -377,10 +377,10 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 
 		
 		HINSTANCE inst2 = ((LPCREATESTRUCT)lParamL)->hInstance;
-		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_LEFT, 235, 280, 200, 24, lwnd, 0, inst2, 0);
-		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_PASSWORD, 235, 310, 200, 24, lwnd, 0, inst2, 0);
-		getU = CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 233, 340, 100, 40, lwnd, (HMENU)LOGIN, inst2, 0);
-		getP = CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 335, 340, 100, 40, lwnd, (HMENU)REGISTER, inst2, 0);
+		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_LEFT, 235, 310, 200, 24, lwnd, 0, inst2, 0);
+		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_PASSWORD, 235, 340, 200, 24, lwnd, 0, inst2, 0);
+		getU = CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 233, 370, 100, 40, lwnd, (HMENU)LOGIN, inst2, 0);
+		getP = CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 335, 370, 100, 40, lwnd, (HMENU)REGISTER, inst2, 0);
 		wchar_t user[] = L"Username";
 		wchar_t pass[] = L"Password";
 		SendMessage(userName, WM_SETFONT, (WPARAM)font, TRUE);
