@@ -504,11 +504,11 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_PASSWORD, 88, 160, 200, 24, rwnd, 0, inst3, 0);
 		reg =CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 88, 200, 100, 40, rwnd, (HMENU)TRUEREG, inst3, 0);
 		regb = CreateWindowEx(0, L"button", L"Back", WS_CHILD | WS_VISIBLE, 190, 200, 100, 40, rwnd, (HMENU)BACK, inst3, 0);
-		wchar_t first[] = L"Enter your first Name";
-		wchar_t last[] = L"Enter your Last Name";
-		wchar_t add[] = L"Enter your Address";
-		wchar_t user[] = L"Choose a Username";
-		wchar_t pass[] = L"Choose a Password";
+		wchar_t first[] = L"First Name";
+		wchar_t last[] = L"Last Name";
+		wchar_t add[] = L"Address";
+		wchar_t user[] = L"Username";
+		wchar_t pass[] = L"Password";
 
 		Edit_SetCueBannerText(firstName, first);
 		Edit_SetCueBannerText(lastName, last);
