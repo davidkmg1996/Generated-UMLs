@@ -661,8 +661,8 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 
 			wstring passCheck = pWord;
 
-			if (passCheck.length() < 8) {
-				MessageBox(rwnd, L"Password must be at least 8 characters", L"Failure to Launch", MB_OK | MB_ICONERROR);
+			if (passCheck.length() < 8 || passCheck.length() > 13) {
+				MessageBox(rwnd, L"Password must be at least 8 characters but no more than 13", L"Failure to Launch", MB_OK | MB_ICONERROR);
 				return 0;
 			}
 
