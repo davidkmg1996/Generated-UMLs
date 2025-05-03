@@ -66,7 +66,6 @@ void showLoginWindow() {
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	static HFONT font;
-
 	static wstring out;
 
 	BS_PUSHBUTTON();
@@ -119,6 +118,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	case WM_COMMAND:
 	{	
 
+		
+
+
+
 		if (LOWORD(wParam) == QUIT) {
 			DestroyWindow(hwnd);
 			PostQuitMessage(0);
@@ -134,7 +137,21 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		}
 
 		if (LOWORD(wParam) == OPEN) {
-			ShellExecute(NULL, L"open", L"C:\\", NULL, NULL, SW_SHOWDEFAULT);
+
+			OPENFILENAME catFile;
+			wchar_t catBuff[256] = { 0 };
+			ZeroMemory(&catFile, sizeof(catFile));
+			catFile.lStructSize = sizeof(catFile);
+			catFile.hwndOwner = hwnd;
+			catFile.lpstrFile = catBuff;
+			catFile.nMaxFile = sizeof(catBuff) / sizeof(wchar_t);
+			catFile.lpstrFilter = L"Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+			catFile.nFilterIndex = 1;
+			catFile.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+			if (GetOpenFileName(&catFile) == TRUE) {
+				ShellExecute(NULL, L"open", catFile.lpstrFile, NULL, NULL, SW_SHOWDEFAULT);
+			}
 		}
 
 		break;
@@ -522,7 +539,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		SendMessage(userName, WM_SETFONT, (WPARAM)font, TRUE);
 		SendMessage(password, WM_SETFONT, (WPARAM)font, TRUE);
 		SendMessage(reg, WM_SETFONT, (WPARAM)font, TRUE);
-		SendMessage(regb, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(regb, WM_SETFONT, (WPARAM)font, TRUE);	
 		
 	}
 
