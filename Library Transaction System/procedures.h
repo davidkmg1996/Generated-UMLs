@@ -662,7 +662,12 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 			wstring passCheck = pWord;
 
 			if (passCheck.length() < 8) {
-								MessageBox(rwnd, L"Password must be at least 8 characters", L"Failure to Launch", MB_OK | MB_ICONERROR);
+				MessageBox(rwnd, L"Password must be at least 8 characters", L"Failure to Launch", MB_OK | MB_ICONERROR);
+				return 0;
+			}
+
+			if (passCheck.find(L"!") == wstring::npos || passCheck.find(L"@") == wstring::npos || passCheck.find(L"#") == wstring::npos || passCheck.find(L"$") == wstring::npos || passCheck.find(L"%") == wstring::npos || passCheck.find(L"^") == wstring::npos || passCheck.find(L"&") == wstring::npos || passCheck.find(L"*") == wstring::npos || passCheck.find(L"(") == wstring::npos || passCheck.find(L")") == wstring::npos) {
+				MessageBox(rwnd, L"Password must contain at leat one of !, @, #, $, %, ^, &, *, ( , )", L"Failure to Launch", MB_OK | MB_ICONERROR);
 				return 0;
 			}
 		
