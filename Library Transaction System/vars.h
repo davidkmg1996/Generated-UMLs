@@ -25,6 +25,11 @@ public:
 
 	}
 
+	void setFalse(bool fCatalog) {
+		fCatalog = false;
+		catalog = fCatalog;
+	}
+
 	bool getBool() {
 
 		return catalog;
