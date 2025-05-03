@@ -589,6 +589,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 				GetWindowText(password, pWord, 300);
 			}
 			else {
+				MessageBox(rwnd, L"what is wrong with u", L"Error", MB_OK | MB_ICONERROR);
 				return 0;
 			}
 
@@ -623,8 +624,11 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 
 			getDb = sqlite3_step(n);
 
-
 			sqlite3_finalize(n);
+
+			MessageBox(rwnd, L"Registration Successful", L"Success", MB_OK | MB_ICONINFORMATION);
+			DestroyWindow(rwnd);
+			showLoginWindow();
 		}
 
 
