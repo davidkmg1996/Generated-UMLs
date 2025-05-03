@@ -12,12 +12,17 @@
 varsH v;
 bool bEmpty;
 
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL);
 LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL);
 LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL);
 
+
 void showLoginWindow() {
+
+
+
 	HICON hIcon = (HICON)LoadImage(NULL, L"newlts.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
 	wchar_t LOG_NAME[500] = L"Login";
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
@@ -29,6 +34,7 @@ void showLoginWindow() {
 	//Prevent black bars/ghosting
 	winL.hbrBackground = (HBRUSH)(COLOR_WINDOW);
 	winL.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
 
 	RegisterClass(&winL);
 
@@ -43,6 +49,7 @@ void showLoginWindow() {
 		hInstance,
 		nullptr
 	);
+
 
 	ShowWindowAsync(lwnd, SW_SHOW);
 	UpdateWindow(lwnd);
@@ -133,7 +140,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		}
 
 		if (LOWORD(wParam) == OPEN) {
-
+	
+			v.setFalse(openCat);
+			InvalidateRect(hwnd, NULL, TRUE);
 			OPENFILENAME catFile;
 			wchar_t catBuff[256] = { 0 };
 			ZeroMemory(&catFile, sizeof(catFile));
@@ -146,12 +155,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			catFile.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
 			if (GetOpenFileName(&catFile) == TRUE) {
+				InvalidateRect(hwnd, NULL, TRUE);
 				ShellExecute(NULL, L"open", catFile.lpstrFile, NULL, NULL, SW_ERASE);
 				v.setTrue(openCat);
 				v.setFilePath(catFile.lpstrFile);
 				InvalidateRect(hwnd, NULL, TRUE);
+				
 			}
 		}
+		
 
 		break;
 	}
@@ -194,6 +206,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				SetTimer(hwnd, 1, 3000, NULL);
 			}
 
+
+
 			if (v.getFilePathInfo() == true) {
 				wstring fInfo = L"Working File Path: " + v.getFilePath();
 				wstring uInfo = L"Current User: " + v.getUsername();
@@ -201,9 +215,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				u.top += 40;
 				DrawText(hdc, fInfo.c_str(), -1, &f, DT_WORDBREAK | DT_LEFT);
 				DrawText(hdc, uInfo.c_str(), -1, &u, DT_WORDBREAK | DT_LEFT);
-				
 			}
-	
+
 			EndPaint(hwnd, &p);
 			break;
 
@@ -231,6 +244,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	case WM_CLOSE:
 	{
 		DestroyWindow(hwnd);
+	
 		break;
 	}
 
@@ -428,17 +442,20 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		if (LOWORD(lParam) == LOGIN) {
 
 			GetWindowText(userName, userN, sizeof(userN) / sizeof(wchar_t));
+			GetWindowText(password, passN, sizeof(passN) / sizeof(wchar_t));
 		
 			sqlite3* db;
 			int getDb = sqlite3_open("registered", &db);;
-			const char* openUsers = "SELECT * FROM registered WHERE username = ?";
+			const char* openUsers = "SELECT * FROM registered WHERE username = ? and password = ?;";
 			sqlite3_stmt* n;
 
 		
 			getDb = sqlite3_prepare_v2(db, openUsers, -1, &n, nullptr);
 			string username(userN, userN + wcslen(userN));
+			string password(passN, passN + wcslen(passN));
 			v.setUsername(userN);
 			sqlite3_bind_text(n, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(n, 2, password.c_str(), -1, SQLITE_TRANSIENT);
 
 			getDb = sqlite3_step(n);
 
@@ -472,11 +489,15 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 			break;
 
 		}
+
+		break;
+
 	}
 
 
 
 	case WM_PAINT: {
+
 
 		PAINTSTRUCT w;
 		PAINTSTRUCT er;
@@ -490,17 +511,16 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		GetClientRect(lwnd, &lm);
 		GetClientRect(lwnd, &e);
 		lm.top += 16;
+
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(lwnd, &ps);
+
 		DrawText(loginMessage, L"Please Enter Username and Password", -1, &lm, DT_CENTER | DT_VCENTER | DT_WORDBREAK);
-	
-
-		if (v.getError() == true) {
-			e.top += 50;
-			DrawText(errorMessage, L"Invalid Username or Password", -1, &e, DT_CENTER | DT_VCENTER | DT_WORDBREAK);
-			EndPaint(lwnd, &er);
-
-		}
-
+		
+		EndPaint(lwnd, &ps);
 		EndPaint(lwnd, &w);
+		EndPaint(lwnd, &er);
+	
 
 		break;
 	}
@@ -516,6 +536,8 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	}
 
 	return DefWindowProc(lwnd, lMsg, lParam, lParamL);
+
+	
 }
 
 

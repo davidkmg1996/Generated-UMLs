@@ -16,10 +16,11 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "MS.h"
 #include "Book.h"
 #include "Member.h"
-#include "Transaction.h"
 #include "procedures.h"
 #include "vars.h"
 #include <shellapi.h>
+#include <commdlg.h> 
+
 
 using namespace std;
 using namespace Gdiplus;
