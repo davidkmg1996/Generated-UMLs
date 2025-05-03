@@ -589,7 +589,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 				GetWindowText(password, pWord, 300);
 			}
 			else {
-				MessageBox(rwnd, L"what is wrong with u", L"Error", MB_OK | MB_ICONERROR);
+				MessageBox(rwnd, L"what is wrong with u", L"Failure to Launch", MB_OK | MB_ICONERROR);
 				return 0;
 			}
 
