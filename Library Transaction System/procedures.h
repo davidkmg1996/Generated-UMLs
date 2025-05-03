@@ -531,6 +531,8 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		sqlite3* db;
 		int getDb;
 		sqlite3_stmt* n;
+		HFONT oFont;
+
 		/*
 		* think, squarepants, think!
 		*/
@@ -607,13 +609,13 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		* WM_COMMAND to prevent unintended
 		* conseqeunces
 		*/
-
 	case WM_PAINT:
 		regMessage = BeginPaint(rwnd, &r);
+		oFont = (HFONT)SelectObject(regMessage, font);
 		SetTextColor(regMessage, RGB(0, 0, 0));
 		SetBkMode(regMessage, TRANSPARENT);
 		GetClientRect(rwnd, &rm);
-		DrawText(regMessage, L"Enter Registration Details Below", -1, &rm, DT_CENTER | DT_WORDBREAK);
+		DrawText(regMessage, L"Enter Registration Details Below", -1, &rm, DT_CENTER | DT_WORDBREAK | WM_GETFONT);
 		EndPaint(rwnd, &r);
 		break;
 
