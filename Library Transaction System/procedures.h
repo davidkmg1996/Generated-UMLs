@@ -1,4 +1,5 @@
 #include "vars.h"
+#include <windows.h>
 #define ABOUT 2250
 #define QUIT 1000
 #define OPEN 2255
@@ -36,7 +37,7 @@ void showLoginWindow() {
 		LOG_NAME,
 		L"Login",
 		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
-		100, 100, 400, 200,
+		100, 100, 700, 500,
 		nullptr,
 		nullptr,
 		hInstance,
@@ -200,15 +201,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 
 	PAINTSTRUCT e;
-
 	HDC edc;
-
 	RECT eR;
 
 	switch (eMsg) {
-
-
-	case WM_PAINT:
+		
+	case WM_PAINT: {
 		edc = BeginPaint(nwnd, &e);
 		SetTextColor(edc, RGB(0, 0, 0));
 		SetBkMode(edc, TRANSPARENT);
@@ -216,6 +214,7 @@ LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 		DrawText(edc, L"Member Name must contain only alphabetic characters", -1, &eR, DT_WORDBREAK);
 		EndPaint(nwnd, &e);
 		break;
+	}
 
 	case WM_CLOSE:
 		DestroyWindow(nwnd);
@@ -228,9 +227,7 @@ LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL) {
 }
 
 
-
 void showMainScreen() {
-
 	wchar_t LIB_NAME[500] = L"Library";
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 	HICON hIcon = (HICON)LoadImage(NULL, L"newlts.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);
@@ -257,6 +254,7 @@ void showMainScreen() {
 		hInstance,
 		nullptr
 	);
+	
 
 	ShowWindowAsync(hwnd, SW_SHOW);
 	UpdateWindow(hwnd);
@@ -271,6 +269,8 @@ void showMainScreen() {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
+	
 
 }
 
@@ -325,6 +325,8 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	wchar_t passN[256];
 	static HWND userName;
 	static HWND password;
+	static HWND getU;
+	static HWND getP;
 
 	switch (lMsg) {
 		
@@ -345,19 +347,23 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 			OUT_DEFAULT_PRECIS,
 			CLIP_DEFAULT_PRECIS,
 			DEFAULT_QUALITY,
-			DEFAULT_PITCH || FF_SWISS,
+			DEFAULT_PITCH | FF_SWISS,
 			TEXT("Helvetica"));
 
 		InvalidateRect(lwnd, NULL, TRUE);
 
 		
 		HINSTANCE inst2 = ((LPCREATESTRUCT)lParamL)->hInstance;
-		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, lwnd, 0, inst2, 0);
-		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, lwnd, 0, inst2, 0);
-		CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 88, 100, 100, 40, lwnd, (HMENU)LOGIN, inst2, 0);
-		CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 190, 100, 100, 40, lwnd, (HMENU)REGISTER, inst2, 0);
+		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_LEFT, 235, 280, 200, 24, lwnd, 0, inst2, 0);
+		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_PASSWORD, 235, 310, 200, 24, lwnd, 0, inst2, 0);
+		getU = CreateWindowEx(0, L"button", L"Login", WS_CHILD | WS_VISIBLE, 233, 340, 100, 40, lwnd, (HMENU)LOGIN, inst2, 0);
+		getP = CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 335, 340, 100, 40, lwnd, (HMENU)REGISTER, inst2, 0);
 		wchar_t user[] = L"Username";
 		wchar_t pass[] = L"Password";
+		SendMessage(userName, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(password, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(getU, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(getP, WM_SETFONT, (WPARAM)font, TRUE);	
 		Edit_SetCueBannerText(userName, user);
 		Edit_SetCueBannerText(password, pass);
 
@@ -430,8 +436,6 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		SetBkMode(loginMessage, TRANSPARENT);
 		GetClientRect(lwnd, &lm);
 		DrawText(loginMessage, L"Please Enter Username and Password", -1, &lm, DT_CENTER | DT_VCENTER | DT_WORDBREAK);
-
-	
 		EndPaint(lwnd, &w);
 		break;
 	}
@@ -457,6 +461,9 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 	static HWND address;
 	static HWND userName;
 	static HWND password;
+	static HWND reg;
+	static HWND regb;
+	static HFONT font;
 
 	string firstN;
 	string lastN;
@@ -472,15 +479,31 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		
 	case WM_CREATE: {
 
+		font = CreateFont(
+			20,
+			0,
+			0,
+			0,
+			FW_NORMAL,
+			FALSE,
+			FALSE,
+			FALSE,
+			DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS,
+			CLIP_DEFAULT_PRECIS,
+			DEFAULT_QUALITY,
+			DEFAULT_PITCH | FF_SWISS,
+			TEXT("Helvetica"));
+
 
 		HINSTANCE inst3 = ((LPCREATESTRUCT)rParamL)->hInstance;
-		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 20, rwnd, 0, inst3, 0);
-		lastName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 20, rwnd, 0, inst3, 0);
-		address = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 100, 200, 20, rwnd, 0, inst3, 0);
-		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 130, 200, 20, rwnd, 0, inst3, 0);
-		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 160, 200, 20, rwnd, 0, inst3, 0);
-		CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 88, 200, 100, 40, rwnd, (HMENU)TRUEREG, inst3, 0);
-		CreateWindowEx(0, L"button", L"Back", WS_CHILD | WS_VISIBLE, 190, 200, 100, 40, rwnd, (HMENU)BACK, inst3, 0);
+		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 24, rwnd, 0, inst3, 0);
+		lastName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 24, rwnd, 0, inst3, 0);
+		address = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 100, 200, 24, rwnd, 0, inst3, 0);
+		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 130, 200, 24, rwnd, 0, inst3, 0);
+		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_PASSWORD, 88, 160, 200, 24, rwnd, 0, inst3, 0);
+		reg =CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 88, 200, 100, 40, rwnd, (HMENU)TRUEREG, inst3, 0);
+		regb = CreateWindowEx(0, L"button", L"Back", WS_CHILD | WS_VISIBLE, 190, 200, 100, 40, rwnd, (HMENU)BACK, inst3, 0);
 		wchar_t first[] = L"Enter your first Name";
 		wchar_t last[] = L"Enter your Last Name";
 		wchar_t add[] = L"Enter your Address";
@@ -492,6 +515,15 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		Edit_SetCueBannerText(address, add);
 		Edit_SetCueBannerText(userName, user);
 		Edit_SetCueBannerText(password, pass);
+
+		SendMessage(firstName, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(lastName, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(address, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(userName, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(password, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(reg, WM_SETFONT, (WPARAM)font, TRUE);
+		SendMessage(regb, WM_SETFONT, (WPARAM)font, TRUE);
+		
 	}
 
 	case WM_COMMAND:

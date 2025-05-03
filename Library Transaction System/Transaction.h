@@ -34,7 +34,15 @@ public:
 		* std::wstring type, returned by the member function
 		* getType() const using the statement this->type,
 		* shorthand for the less syntactically ambiguous
-		* (albeit more complex) statement (*this).type
+		* (albeit more complex) statement (*this).type. Being
+		* a wide string, this can not (and should not) be accessed
+		* via std::string, as Windows uses UTF-16 character
+		* encoding. It is imperative that this restriction also
+		* be placed arbitrarily on UNIX based or UNIX-like systems,
+		* because, of couse, as anyone would most definitely know,
+		* UTF-32 is seldom, but sometimes, and sometimes not sometimes
+		* or even often sometimes used in tj
+	
 		* 
 		*
 		*obviously

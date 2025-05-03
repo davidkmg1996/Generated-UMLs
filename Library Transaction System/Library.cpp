@@ -4,6 +4,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Web.Syndication.h>
 #include <windows.h>
+#include <gdiplus.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -21,6 +22,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <shellapi.h>
 
 using namespace std;
+using namespace Gdiplus;
 
 /*
 * Based off of UML suggestion with
