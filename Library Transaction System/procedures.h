@@ -156,7 +156,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 			if (GetOpenFileName(&catFile) == TRUE) {
 				InvalidateRect(hwnd, NULL, TRUE);
-				ShellExecute(NULL, L"open", catFile.lpstrFile, NULL, NULL, SW_ERASE);
 				v.setTrue(openCat);
 				v.setFilePath(catFile.lpstrFile);
 				InvalidateRect(hwnd, NULL, TRUE);
@@ -215,6 +214,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				u.top += 40;
 				DrawText(hdc, fInfo.c_str(), -1, &f, DT_WORDBREAK | DT_LEFT);
 				DrawText(hdc, uInfo.c_str(), -1, &u, DT_WORDBREAK | DT_LEFT);
+				wifstream file(v.getFilePath());
+				wstring bookInfo;
+				while (getline(file, bookInfo)) {
+					u.top += 30;
+					DrawText(hdc, bookInfo.c_str(), -1, &u, DT_WORDBREAK | DT_LEFT);
+					
+
+				}
+				file.open(v.getFilePath());
+
 			}
 
 			EndPaint(hwnd, &p);
