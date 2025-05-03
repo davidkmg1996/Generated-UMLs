@@ -148,6 +148,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			if (GetOpenFileName(&catFile) == TRUE) {
 				ShellExecute(NULL, L"open", catFile.lpstrFile, NULL, NULL, SW_ERASE);
 				v.setTrue(openCat);
+				v.setFilePath(catFile.lpstrFile);
 				InvalidateRect(hwnd, NULL, TRUE);
 			}
 		}
@@ -161,6 +162,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	{
 			PAINTSTRUCT p;
 			RECT r;
+			RECT f;
 			HDC hdc = BeginPaint(hwnd, &p);
 			HFONT oFont = (HFONT)SelectObject(hdc, font);
 	
@@ -172,6 +174,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			*/
 
 			GetClientRect(hwnd, &r);
+			GetClientRect(hwnd, &f);
 			SetTextColor(hdc, RGB(0, 0, 0));
 			SetBkMode(hdc, TRANSPARENT);
 
@@ -180,7 +183,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			}
 
 			if (v.getBool() == true) {
-				DrawText(hdc, L"Catalog Opened", -1, &r, DT_WORDBREAK | DT_CENTER);
+				r.top += 20;
+				f.top += 45;
+				DrawText(hdc, L"Catalog Opened", -1, &r, DT_WORDBREAK | DT_LEFT);
+				DrawText(hdc, v.getFilePath().c_str(), -1, &f, DT_WORDBREAK | DT_LEFT);
 			}
 	
 			EndPaint(hwnd, &p);
