@@ -448,7 +448,6 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 			int getDb = sqlite3_open("registered", &db);;
 			const char* openUsers = "SELECT * FROM registered WHERE username = ? and password = ?;";
 			sqlite3_stmt* n;
-
 		
 			getDb = sqlite3_prepare_v2(db, openUsers, -1, &n, nullptr);
 			string username(userN, userN + wcslen(userN));
@@ -639,23 +638,34 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 			wchar_t uName[300];
 			wchar_t tText[300];
 			wchar_t pWord[300];
+			int messages = 0;
 
 			const char* regTable = "CREATE TABLE registered(firstName varchar(255), lastName varchar(255), address varchar(255), username varchar(255) UNIQUE, password varchar(255));";
 			getDb = sqlite3_exec(db, regTable, 0, 0, 0);
 
 			const char* sqlStatement = "INSERT INTO registered(firstName, lastName, address, username, password) VALUES (?, ?, ?, ?, ?);";
 
-			if ((GetWindowText(firstName, fName, 300) != NULL) && (GetWindowText(lastName, lName, 300) != NULL) && (GetWindowText(address, add, 300) != NULL) && (GetWindowText(userName, uName, 300) != NULL) && (GetWindowText(password, pWord, 300) != NULL)) {
+			if ((GetWindowText(firstName, fName, 300) != NULL) && (GetWindowText(lastName, lName, 300) != NULL) && (GetWindowText(address, add, 300) != NULL) && (GetWindowText(userName, uName, 300) != NULL) && GetWindowText(password, pWord, 300)) {
 				GetWindowText(firstName, fName, 300);
 				GetWindowText(lastName, lName, 300);
 				GetWindowText(address, add, 300);
 				GetWindowText(userName, uName, 300);
 				GetWindowText(password, pWord, 300);
-			}
-			else {
+			} 
+
+			else  {
 				MessageBox(rwnd, L"what is wrong with u", L"Failure to Launch", MB_OK | MB_ICONERROR);
 				return 0;
+		
 			}
+
+			wstring passCheck = pWord;
+
+			if (passCheck.length() < 8) {
+								MessageBox(rwnd, L"Password must be at least 8 characters", L"Failure to Launch", MB_OK | MB_ICONERROR);
+				return 0;
+			}
+		
 
 			wstring firstN3 = fName;
 			string firstN2(firstN3.begin(), firstN3.end());
