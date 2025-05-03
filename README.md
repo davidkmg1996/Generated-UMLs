@@ -10,3 +10,6 @@ to match the diagram exactly.
 Expand exposure to unfamiliar APIs and provide examples of ethical
 generative AI prototyping techniques
 
+# Library Transaction System
+![ltsTransparent](https://github.com/user-attachments/assets/bd0d4ca5-ed27-4201-b272-975851fde2e4)
+The first, of hopefully many, stupid little projects
