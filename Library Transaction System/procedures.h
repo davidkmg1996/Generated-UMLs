@@ -163,6 +163,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			PAINTSTRUCT p;
 			RECT r;
 			RECT f;
+			RECT u;
 			HDC hdc = BeginPaint(hwnd, &p);
 			HFONT oFont = (HFONT)SelectObject(hdc, font);
 	
@@ -175,6 +176,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 			GetClientRect(hwnd, &r);
 			GetClientRect(hwnd, &f);
+			GetClientRect(hwnd, &u);
 			SetTextColor(hdc, RGB(0, 0, 0));
 			SetBkMode(hdc, TRANSPARENT);
 
@@ -185,8 +187,21 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			if (v.getBool() == true) {
 				r.top += 20;
 				f.top += 45;
+				SetTextColor(hdc, RGB(255, 0, 30));
 				DrawText(hdc, L"Catalog Opened", -1, &r, DT_WORDBREAK | DT_LEFT);
+				SetTextColor(hdc, RGB(0, 0, 0));
 				DrawText(hdc, v.getFilePath().c_str(), -1, &f, DT_WORDBREAK | DT_LEFT);
+				SetTimer(hwnd, 1, 3000, NULL);
+			}
+
+			if (v.getFilePathInfo() == true) {
+				wstring fInfo = L"Working File Path: " + v.getFilePath();
+				wstring uInfo = L"Current User: " + v.getUsername();
+				f.top += 20;
+				u.top += 40;
+				DrawText(hdc, fInfo.c_str(), -1, &f, DT_WORDBREAK | DT_LEFT);
+				DrawText(hdc, uInfo.c_str(), -1, &u, DT_WORDBREAK | DT_LEFT);
+				
 			}
 	
 			EndPaint(hwnd, &p);
@@ -200,6 +215,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	* just close the window.
 	* kthx
 	*/
+
+	case WM_TIMER: {
+		if (wParam == 1) {
+			v.setFalse(openCat);
+			InvalidateRect(hwnd, NULL, TRUE);
+			KillTimer(hwnd, 1);
+			bool fPathInfo = false;
+			v.setFilePathInfo(fPathInfo);
+		}
+
+		break;
+	}
 
 	case WM_CLOSE:
 	{
@@ -350,10 +377,12 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	static HWND password;
 	static HWND getU;
 	static HWND getP;
+	bool eMessage = false;
 
 	switch (lMsg) {
 		
 		RECT lm;
+		RECT e;
 
 	case WM_CREATE: {
 
@@ -427,9 +456,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 				showMainScreen();
 			}
 			else if (getDb == SQLITE_DONE) {
-				
-				DestroyWindow(lwnd);
-				registrationWindow();
+				v.setError(eMessage);
 			}
 
 			sqlite3_finalize(n);
@@ -452,17 +479,32 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 	case WM_PAINT: {
 
 		PAINTSTRUCT w;
+		PAINTSTRUCT er;
 		HDC loginMessage = BeginPaint(lwnd, &w);
-
+		HDC errorMessage = BeginPaint(lwnd, &er);
 		HFONT oFont = (HFONT)SelectObject(loginMessage, font);
 		SetTextColor(loginMessage, RGB(0, 0, 0));;
+		SetTextColor(errorMessage, RGB(0, 0, 0));;
 		SetBkMode(loginMessage, TRANSPARENT);
+		SetBkMode(errorMessage, TRANSPARENT);
 		GetClientRect(lwnd, &lm);
+		GetClientRect(lwnd, &e);
 		lm.top += 16;
 		DrawText(loginMessage, L"Please Enter Username and Password", -1, &lm, DT_CENTER | DT_VCENTER | DT_WORDBREAK);
+	
+
+		if (v.getError() == true) {
+			e.top += 50;
+			DrawText(errorMessage, L"Invalid Username or Password", -1, &e, DT_CENTER | DT_VCENTER | DT_WORDBREAK);
+			EndPaint(lwnd, &er);
+
+		}
+
 		EndPaint(lwnd, &w);
+
 		break;
 	}
+
 
 	case WM_CLOSE:
 		DestroyWindow(lwnd);

@@ -29,6 +29,17 @@ public:
 		return fPath;
 	}
 
+	void setError(bool oError) {
+		oError = true;
+		error = oError;
+
+	}
+
+	bool getError() {
+
+		return error;
+	}
+
 	void setTrue(bool oCatalog) {
 		oCatalog = true;
 		catalog = oCatalog;
@@ -45,9 +56,22 @@ public:
 		return catalog;
 	}
 
+	void setFilePathInfo(bool fPathInfo) {
+		fPathInfo = true;
+		filePathInfo = fPathInfo;
+
+	}
+
+	bool getFilePathInfo() {
+
+		return filePathInfo;
+	}
+
 private:
 	wstring currentuser;
 	wstring fPath;
 	bool catalog;
+	bool error;
+	bool filePathInfo;
 
 };
