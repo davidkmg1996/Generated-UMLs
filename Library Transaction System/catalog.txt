@@ -1,0 +1,91 @@
+Pride and Prejudice Jane Austen 9780141040349 Classic
+1984 George Orwell 9780451524935 Dystopian
+To Kill a Mockingbird Harper Lee 9780061120084 Fiction
+The Great Gatsby F. Scott Fitzgerald 9780743273565 Classic
+Moby Dick Herman Melville 9781503280786 Adventure
+War and Peace Leo Tolstoy 9781400079988 Historical Fiction
+The Catcher in the Rye J.D. Salinger 9780316769488 Fiction
+Crime and Punishment Fyodor Dostoevsky 9780486415871 Psychological Fiction
+Brave New World Aldous Huxley 9780060850524 Dystopian
+Wuthering Heights Emily Brontë 9780141439556 Gothic Fiction
+Jane Eyre Charlotte Brontë 9780142437208 Classic
+The Lord of the Rings J.R.R. Tolkien 9780544003415 Fantasy
+Anna Karenina Leo Tolstoy 9780143035008 Romance
+The Hobbit J.R.R. Tolkien 9780547928227 Fantasy
+Fahrenheit 451 Ray Bradbury 9781451673319 Dystopian
+Don Quixote Miguel de Cervantes 9780060934347 Adventure
+The Brothers Karamazov Fyodor Dostoevsky 9780374528379 Philosophical Fiction
+The Odyssey Homer 9780140268867 Epic Poetry
+One Hundred Years of Solitude Gabriel García Márquez 9780060883287 Magical Realism
+Les Misérables Victor Hugo 9780451419439 Historical Fiction
+The Iliad Homer 9780140275360 Epic Poetry
+The Divine Comedy Dante Alighieri 9780140448955 Epic Poetry
+Great Expectations Charles Dickens 9780141439563 Classic
+The Picture of Dorian Gray Oscar Wilde 9780141442464 Gothic Fiction
+Ulysses James Joyce 9780199535675 Modernist Fiction
+Middlemarch George Eliot 9780141439549 Classic
+The Sound and the Fury William Faulkner 9780679732242 Modernist Fiction
+Madame Bovary Gustave Flaubert 9780140449129 Realist Fiction
+The Count of Monte Cristo Alexandre Dumas 9780140449266 Adventure
+The Grapes of Wrath John Steinbeck 9780143039433 Historical Fiction
+Lolita Vladimir Nabokov 9780679723165 Psychological Fiction
+Slaughterhouse-Five Kurt Vonnegut 9780385333849 Satire
+The Stranger Albert Camus 9780679720201 Existential Fiction
+The Metamorphosis Franz Kafka 9780553213690 Absurdist Fiction
+Frankenstein Mary Shelley 9780141439471 Gothic Fiction
+Dracula Bram Stoker 9780141439846 Gothic Horror
+Heart of Darkness Joseph Conrad 9780486264646 Classic
+A Tale of Two Cities Charles Dickens 9780141439600 Historical Fiction
+The Old Man and the Sea Ernest Hemingway 9780684801223 Classic
+The Sun Also Rises Ernest Hemingway 9780684800714 Fiction
+Catch-22 Joseph Heller 9781451626650 Satire
+Beloved Toni Morrison 9781400033416 Historical Fiction
+The Road Cormac McCarthy 9780307387899 Dystopian
+Gone with the Wind Margaret Mitchell 9781451635621 Historical Fiction
+The Color Purple Alice Walker 9780156028356 Fiction
+A Clockwork Orange Anthony Burgess 9780393312836 Dystopian
+The Scarlet Letter Nathaniel Hawthorne 9780142437260 Classic
+Mansfield Park Jane Austen 9780141439808 Classic
+Emma Jane Austen 9780141439587 Classic
+The Adventures of Huckleberry Finn Mark Twain 9780486280615 Adventure
+Treasure Island Robert Louis Stevenson 9780486275598 Adventure
+A Passage to India E.M. Forster 9780156711425 Classic
+The Trial Franz Kafka 9780805209990 Absurdist Fiction
+Things Fall Apart Chinua Achebe 9780385474542 African Literature
+Invisible Man Ralph Ellison 9780679732761 African American Fiction
+Rebecca Daphne du Maurier 9780380730407 Gothic Fiction
+Life of Pi Yann Martel 9780156027328 Adventure
+The Handmaid's Tale Margaret Atwood 9780385490818 Dystopian
+The Book Thief Markus Zusak 9780375842206 Historical Fiction
+The Kite Runner Khaled Hosseini 9781594631931 Historical Fiction
+Memoirs of a Geisha Arthur Golden 9780679781585 Historical Fiction
+The Night Circus Erin Morgenstern 9780307744431 Fantasy
+Cloud Atlas David Mitchell 9780375507259 Science Fiction
+The Hunger Games Suzanne Collins 9780439023528 Dystopian
+The Fault in Our Stars John Green 9780142424179 Romance
+The Alchemist Paulo Coelho 9780061122415 Adventure
+The Giver Lois Lowry 9780544336261 Dystopian
+The Time Traveler's Wife Audrey Niffenegger 9780156029438 Romance
+The Secret Life of Bees Sue Monk Kidd 9780142001746 Fiction
+Water for Elephants Sara Gruen 9781565125605 Historical Fiction
+The Goldfinch Donna Tartt 9780316055437 Fiction
+Room Emma Donoghue 9780316098335 Psychological Fiction
+Big Little Lies Liane Moriarty 9780425274866 Fiction
+The Girl on the Train Paula Hawkins 9781594634024 Thriller
+The Da Vinci Code Dan Brown 9780307474278 Thriller
+Angels & Demons Dan Brown 9780743493468 Thriller
+The Shining Stephen King 9780307743657 Horror
+It Stephen King 9781501142970 Horror
+Pet Sematary Stephen King 9781501156700 Horror
+The Stand Stephen King 9780307743688 Apocalyptic Fiction
+American Gods Neil Gaiman 9780062572233 Fantasy
+Good Omens Neil Gaiman Terry Pratchett 9780060853983 Fantasy
+The Name of the Wind Patrick Rothfuss 9780756404741 Fantasy
+Mistborn The Final Empire Brandon Sanderson 9780765311788 Fantasy
+The Way of Kings Brandon Sanderson 9780765326355 Fantasy
+Dune Frank Herbert 9780441013593 Science Fiction
+Neuromancer William Gibson 9780441569594 Cyberpunk
+Snow Crash Neal Stephenson 9780553380958 Cyberpunk
+Foundation Isaac Asimov 9780553293357 Science Fiction
+Ender's Game Orson Scott Card 9780812550702 Science Fiction
+Ready Player One Ernest Cline 9780307887443 Science Fiction
