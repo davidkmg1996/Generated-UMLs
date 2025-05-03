@@ -654,7 +654,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 			} 
 
 			else  {
-				MessageBox(rwnd, L"what is wrong with u", L"Failure to Launch", MB_OK | MB_ICONERROR);
+				MessageBox(rwnd, L"All fields must contain entries", L"Failure to Launch", MB_OK | MB_ICONERROR);
 				return 0;
 		
 			}
