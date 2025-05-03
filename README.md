@@ -10,3 +10,4 @@ to match the diagram exactly.
 Expand exposure to unfamiliar APIs and provide examples of ethical
 generative AI prototyping techniques
 
+![ltsTransparent](https://github.com/user-attachments/assets/bd0d4ca5-ed27-4201-b272-975851fde2e4)
