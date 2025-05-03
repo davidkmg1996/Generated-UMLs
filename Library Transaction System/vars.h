@@ -19,8 +19,21 @@ public:
 		return currentuser;
 	}
 
+	void setTrue(bool oCatalog) {
+		oCatalog = true;
+		catalog = oCatalog;
+
+	}
+
+	bool getBool() {
+
+		return catalog;
+	}
+	
+
 
 private:
 	wstring currentuser;
+	bool catalog;
 
 };

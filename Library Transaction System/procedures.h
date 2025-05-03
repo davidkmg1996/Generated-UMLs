@@ -59,7 +59,6 @@ void showLoginWindow() {
 		DispatchMessage(&nMes);
 	}
 
-
 }
 
 
@@ -67,6 +66,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 	static HFONT font;
 	static wstring out;
+	bool openCat = false;
 
 	BS_PUSHBUTTON();
 
@@ -118,10 +118,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	case WM_COMMAND:
 	{	
 
-		
-
-
-
 		if (LOWORD(wParam) == QUIT) {
 			DestroyWindow(hwnd);
 			PostQuitMessage(0);
@@ -150,7 +146,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			catFile.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
 			if (GetOpenFileName(&catFile) == TRUE) {
-				ShellExecute(NULL, L"open", catFile.lpstrFile, NULL, NULL, SW_SHOWDEFAULT);
+				ShellExecute(NULL, L"open", catFile.lpstrFile, NULL, NULL, SW_ERASE);
+				v.setTrue(openCat);
+				InvalidateRect(hwnd, NULL, TRUE);
 			}
 		}
 
@@ -180,11 +178,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			if (bEmpty == false) {
 				DrawText(hdc, out.c_str(), -1, &r, DT_WORDBREAK | DT_CENTER);
 			}
-		
 
+			if (v.getBool() == true) {
+				DrawText(hdc, L"Catalog Opened", -1, &r, DT_WORDBREAK | DT_CENTER);
+			}
+	
 			EndPaint(hwnd, &p);
 			break;
-
 
 
 	}
