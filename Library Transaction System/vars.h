@@ -7,9 +7,8 @@ using namespace std;
 
 class varsH {
 
-public:
-	wstring currentuser;
 
+public:
 	void setUsername(wstring user) {
 
 		currentuser = user;
@@ -19,4 +18,9 @@ public:
 
 		return currentuser;
 	}
+
+
+private:
+	wstring currentuser;
+
 };
