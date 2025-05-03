@@ -458,6 +458,7 @@ LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL) {
 		SetTextColor(loginMessage, RGB(0, 0, 0));;
 		SetBkMode(loginMessage, TRANSPARENT);
 		GetClientRect(lwnd, &lm);
+		lm.top += 16;
 		DrawText(loginMessage, L"Please Enter Username and Password", -1, &lm, DT_CENTER | DT_VCENTER | DT_WORDBREAK);
 		EndPaint(lwnd, &w);
 		break;
@@ -520,11 +521,11 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 
 
 		HINSTANCE inst3 = ((LPCREATESTRUCT)rParamL)->hInstance;
-		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 40, 200, 24, rwnd, 0, inst3, 0);
-		lastName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 70, 200, 24, rwnd, 0, inst3, 0);
-		address = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 100, 200, 24, rwnd, 0, inst3, 0);
-		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 130, 200, 24, rwnd, 0, inst3, 0);
-		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_PASSWORD, 88, 160, 200, 24, rwnd, 0, inst3, 0);
+		firstName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 45, 200, 24, rwnd, 0, inst3, 0);
+		lastName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 75, 200, 24, rwnd, 0, inst3, 0);
+		address = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 105, 200, 24, rwnd, 0, inst3, 0);
+		userName = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 88, 135, 200, 24, rwnd, 0, inst3, 0);
+		password = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE | ES_PASSWORD, 88, 165, 200, 24, rwnd, 0, inst3, 0);
 		reg =CreateWindowEx(0, L"button", L"Register", WS_CHILD | WS_VISIBLE, 88, 200, 100, 40, rwnd, (HMENU)TRUEREG, inst3, 0);
 		regb = CreateWindowEx(0, L"button", L"Back", WS_CHILD | WS_VISIBLE, 190, 200, 100, 40, rwnd, (HMENU)BACK, inst3, 0);
 		wchar_t first[] = L"First Name";
@@ -638,6 +639,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 		SetTextColor(regMessage, RGB(0, 0, 0));
 		SetBkMode(regMessage, TRANSPARENT);
 		GetClientRect(rwnd, &rm);
+		rm.top += 15;
 		DrawText(regMessage, L"Enter Registration Details Below", -1, &rm, DT_CENTER | DT_WORDBREAK | WM_GETFONT);
 		EndPaint(rwnd, &r);
 		break;
