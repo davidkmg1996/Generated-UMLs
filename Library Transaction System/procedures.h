@@ -666,7 +666,7 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 				return 0;
 			}
 
-			if (passCheck.find(L"!") == wstring::npos || passCheck.find(L"@") == wstring::npos || passCheck.find(L"#") == wstring::npos || passCheck.find(L"$") == wstring::npos || passCheck.find(L"%") == wstring::npos || passCheck.find(L"^") == wstring::npos || passCheck.find(L"&") == wstring::npos || passCheck.find(L"*") == wstring::npos || passCheck.find(L"(") == wstring::npos || passCheck.find(L")") == wstring::npos) {
+			if (passCheck.find(L"!") == wstring::npos && passCheck.find(L"@") == wstring::npos && passCheck.find(L"#") == wstring::npos && passCheck.find(L"$") == wstring::npos && passCheck.find(L"%") == wstring::npos && passCheck.find(L"^") == wstring::npos && passCheck.find(L"&") == wstring::npos && passCheck.find(L"*") == wstring::npos && passCheck.find(L"(") == wstring::npos && passCheck.find(L")") == wstring::npos) {
 				MessageBox(rwnd, L"Password must contain at leat one of !, @, #, $, %, ^, &, *, ( , )", L"Failure to Launch", MB_OK | MB_ICONERROR);
 				return 0;
 			}
