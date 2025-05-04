@@ -57,7 +57,6 @@ public:
 	}
 
 	void setFilePathInfo(bool fPathInfo) {
-		fPathInfo = true;
 		filePathInfo = fPathInfo;
 
 	}

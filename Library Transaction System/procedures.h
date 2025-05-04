@@ -131,6 +131,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		}
 
 		if (LOWORD(wParam) == LOGOUT) {
+			v.setFalse(openCat);
+			v.setFilePath(L"");
+			v.setFilePathInfo(false);
+			InvalidateRect(hwnd, NULL, TRUE);
 			DestroyWindow(hwnd);
 			showLoginWindow();
 		}
@@ -212,19 +216,22 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				wstring uInfo = L"Current User: " + v.getUsername();
 				f.top += 20;
 				u.top += 40;
+				SetTextColor(hdc, RGB(30, 0, 255));
 				DrawText(hdc, fInfo.c_str(), -1, &f, DT_WORDBREAK | DT_LEFT);
 				DrawText(hdc, uInfo.c_str(), -1, &u, DT_WORDBREAK | DT_LEFT);
+				SetTextColor(hdc, RGB(0, 0, 0));
 				wifstream file(v.getFilePath());
 				wstring bookInfo;
 				while (getline(file, bookInfo)) {
 					u.top += 30;
 					DrawText(hdc, bookInfo.c_str(), -1, &u, DT_WORDBREAK | DT_LEFT);
 					
-
 				}
-				file.open(v.getFilePath());
-
+				file.close();
+				
 			}
+
+			
 
 			EndPaint(hwnd, &p);
 			break;
@@ -243,7 +250,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			v.setFalse(openCat);
 			InvalidateRect(hwnd, NULL, TRUE);
 			KillTimer(hwnd, 1);
-			bool fPathInfo = false;
+			bool fPathInfo = true;
 			v.setFilePathInfo(fPathInfo);
 		}
 
@@ -670,8 +677,8 @@ LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParam
 
 			wstring passCheck = pWord;
 
-			if (passCheck.length() < 8 || passCheck.length() > 13) {
-				MessageBox(rwnd, L"Password must be at least 8 characters but no more than 13", L"Failure to Launch", MB_OK | MB_ICONERROR);
+			if (passCheck.length() < 8 || passCheck.length() > 16) {
+				MessageBox(rwnd, L"Password must be at least 8 characters but no more than 16", L"Failure to Launch", MB_OK | MB_ICONERROR);
 				return 0;
 			}
 
