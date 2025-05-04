@@ -1,6 +1,7 @@
 #include "vars.h"
 #include <windows.h>
-#define ABOUT 2250
+#define ABOUT 2260
+#define CLOSE 500
 #define QUIT 1000
 #define OPEN 2255
 #define LOGIN 2250
@@ -17,6 +18,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK nProc(HWND nwnd, UINT eMsg, WPARAM eParam, LPARAM eParamL);
 LRESULT CALLBACK login(HWND lwnd, UINT lMsg, WPARAM lParam, LPARAM lParamL);
 LRESULT CALLBACK RegisterProc(HWND rwnd, UINT rMsg, WPARAM rParam, LPARAM rParamL);
+HMENU fMenu = CreatePopupMenu();
 
 
 void showLoginWindow() {
@@ -74,6 +76,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	static HFONT font;
 	static wstring out;
 	bool openCat = false;
+	
+	
+	OPENFILENAME catFile;
 
 	BS_PUSHBUTTON();
 
@@ -102,8 +107,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		HINSTANCE inst = ((LPCREATESTRUCT)lParam)->hInstance;
 	
 		HMENU menuBar = CreateMenu();
-		HMENU fMenu = CreatePopupMenu();
+		
+		
 		AppendMenu(fMenu, MF_STRING, OPEN, L"Open Catalog");
+		
 		AppendMenu(menuBar, MF_POPUP, (UINT_PTR)fMenu, L"File");
 
 
@@ -121,6 +128,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		break;
 
 	}
+
+	
 
 	case WM_COMMAND:
 	{	
@@ -143,11 +152,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			MessageBox(hwnd, L"Library Management System\n\nVersion 0.2.1\n\nCreated by: davidkmg1996", L"About", MB_OK | MB_ICONINFORMATION);
 		}
 
+	
+
+
 		if (LOWORD(wParam) == OPEN) {
 	
 			v.setFalse(openCat);
 			InvalidateRect(hwnd, NULL, TRUE);
-			OPENFILENAME catFile;
 			wchar_t catBuff[256] = { 0 };
 			ZeroMemory(&catFile, sizeof(catFile));
 			catFile.lStructSize = sizeof(catFile);
@@ -159,15 +170,28 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			catFile.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
 			if (GetOpenFileName(&catFile) == TRUE) {
+				
+				AppendMenu(fMenu, MF_STRING, CLOSE, L"Close Catalog");
+				DrawMenuBar(hwnd);
 				InvalidateRect(hwnd, NULL, TRUE);
 				v.setTrue(openCat);
 				v.setFilePath(catFile.lpstrFile);
 				InvalidateRect(hwnd, NULL, TRUE);
 				
+				
 			}
+
+		}
+
+		if (LOWORD(wParam) == CLOSE) {
+			v.setFalse(openCat);
+			v.setFilePath(L"");
+			v.setFilePathInfo(false);
+			DeleteMenu(fMenu, CLOSE, MF_BYCOMMAND);
+			InvalidateRect(hwnd, NULL, TRUE);
+			
 		}
 		
-
 		break;
 	}
 
@@ -212,6 +236,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 
 			if (v.getFilePathInfo() == true) {
+				int totalLines = 0;
 				wstring fInfo = L"Working File Path: " + v.getFilePath();
 				wstring uInfo = L"Current User: " + v.getUsername();
 				f.top += 20;
@@ -224,9 +249,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				wstring bookInfo;
 				while (getline(file, bookInfo)) {
 					u.top += 30;
+					totalLines++;
 					DrawText(hdc, bookInfo.c_str(), -1, &u, DT_WORDBREAK | DT_LEFT);
 					
 				}
+
+				SCROLLINFO catScroll = { sizeof(SCROLLINFO) };
+				catScroll.fMask = SIF_RANGE | SIF_PAGE;
+				catScroll.nMin = 0;
+				catScroll.nMax = totalLines - 1;
+				SetScrollInfo(hwnd, SB_VERT, &catScroll, TRUE);
 				file.close();
 				
 			}
@@ -238,6 +270,27 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 
 	}
+
+	case WM_VSCROLL: {
+
+		SCROLLINFO catScroll = { sizeof(SCROLLINFO) };
+		catScroll.fMask = SIF_ALL;
+		GetScrollInfo(hwnd, SB_VERT, &catScroll);
+		int y = catScroll.nPos;
+
+		switch (LOWORD(wParam)) {
+		case SB_LINEUP:       catScroll.nPos -= 1; break;
+		case SB_LINEDOWN:     catScroll.nPos += 1; break;
+		case SB_PAGEUP:       catScroll.nPos -= catScroll.nPage; break;
+		case SB_PAGEDOWN:     catScroll.nPos += catScroll.nPage; break;
+		case SB_THUMBTRACK:   catScroll.nPos = HIWORD(wParam); break;
+		}
+
+		catScroll.fMask = SIF_POS;
+		catScroll.nPos = max(0, min(catScroll.nPos, catScroll.nMax  - (int)catScroll.nPage - 1));
+		SetScrollInfo(hwnd, SB_VERT, &catScroll, TRUE);
+		break;
+	}	
 
 	/*
 	* If you're going to close the window,
@@ -327,7 +380,7 @@ void showMainScreen() {
 		0,
 		LIB_NAME,
 		head,
-		WS_OVERLAPPEDWINDOW,
+		WS_OVERLAPPEDWINDOW | WS_VSCROLL,
 		100, 100, 800, 600,
 		nullptr,
 		nullptr,
