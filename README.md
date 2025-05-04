@@ -15,4 +15,5 @@ generative AI prototyping techniques
 The first, of hopefully many, stupid little projects
 
 # Iron Core
+![logo](https://github.com/user-attachments/assets/5b27a0e8-b225-456c-8117-05d286e082fc)
 Small Game about a group of scientists trying to limit radioctive exposure
