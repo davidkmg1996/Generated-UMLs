@@ -156,7 +156,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 
 		if (LOWORD(wParam) == OPEN) {
-	
+			
 			v.setFalse(openCat);
 			InvalidateRect(hwnd, NULL, TRUE);
 			wchar_t catBuff[256] = { 0 };
@@ -170,13 +170,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			catFile.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
 			if (GetOpenFileName(&catFile) == TRUE) {
-				
+				v.setFalse(openCat);
+				v.setFilePath(L"");
+				v.setFilePathInfo(false);
+				DeleteMenu(fMenu, CLOSE, MF_BYCOMMAND);
+				InvalidateRect(hwnd, NULL, TRUE);
 				AppendMenu(fMenu, MF_STRING, CLOSE, L"Close Catalog");
 				DrawMenuBar(hwnd);
 				InvalidateRect(hwnd, NULL, TRUE);
 				v.setTrue(openCat);
 				v.setFilePath(catFile.lpstrFile);
 				InvalidateRect(hwnd, NULL, TRUE);
+				
 				
 				
 			}
